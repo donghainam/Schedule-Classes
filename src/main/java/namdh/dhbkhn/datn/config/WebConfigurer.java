@@ -3,6 +3,7 @@ package namdh.dhbkhn.datn.config;
 import static java.net.URLDecoder.decode;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import javax.servlet.*;
@@ -54,10 +55,14 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     @Override
     public void customize(WebServerFactory server) {
         // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
-        setLocationForStaticAssets(server);
+        try {
+            setLocationForStaticAssets(server);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void setLocationForStaticAssets(WebServerFactory server) {
+    private void setLocationForStaticAssets(WebServerFactory server) throws UnsupportedEncodingException {
         if (server instanceof ConfigurableServletWebServerFactory) {
             ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) server;
             File root;
@@ -72,8 +77,8 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     /**
      * Resolve path prefix to static resources.
      */
-    private String resolvePathPrefix() {
-        String fullExecutablePath = decode(this.getClass().getResource("").getPath(), StandardCharsets.UTF_8);
+    private String resolvePathPrefix() throws UnsupportedEncodingException {
+        String fullExecutablePath = decode(this.getClass().getResource("").getPath(), String.valueOf(StandardCharsets.UTF_8));
         String rootPath = Paths.get(".").toUri().normalize().getPath();
         String extractedPath = fullExecutablePath.replace(rootPath, "");
         int extractionEndIndex = extractedPath.indexOf("target/");
