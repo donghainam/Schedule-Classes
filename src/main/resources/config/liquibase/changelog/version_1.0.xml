@@ -38,7 +38,7 @@
             <column name="semester" type="varchar(25)">
                 <constraints nullable="false"/>
             </column>
-            <column name="condition" type="int" defaultValueNumeric="1"/>
+            <column name="conditions" type="int" defaultValueNumeric="1"/>
             <column name="count_condition" type="int" defaultValueNumeric="0"/>
             <column name="count_week_studied" type="int" defaultValueNumeric="0"/>
             <column name="created_by" type="varchar(50)">

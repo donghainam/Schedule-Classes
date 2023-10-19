@@ -11,7 +11,7 @@ public class ClassesOutputDTO {
     private int startWeek;
     private int numberOfLessons;
     private String semester;
-    private int condition;
+    private int conditions;
     private int countCondition;
     private int countWeekStudied;
 
@@ -25,7 +25,7 @@ public class ClassesOutputDTO {
         this.startWeek = classes.getStartWeek();
         this.numberOfLessons = classes.getNumberOfLessons();
         this.semester = classes.getSemester();
-        this.condition = classes.getCondition();
+        this.conditions = classes.getConditions();
         this.countCondition = classes.getCountCondition();
         this.countWeekStudied = classes.getCountWeekStudied();
     }
@@ -86,12 +86,12 @@ public class ClassesOutputDTO {
         this.semester = semester;
     }
 
-    public int getCondition() {
-        return condition;
+    public int getConditions() {
+        return conditions;
     }
 
-    public void setCondition(int condition) {
-        this.condition = condition;
+    public void setConditions(int conditions) {
+        this.conditions = conditions;
     }
 
     public int getCountCondition() {

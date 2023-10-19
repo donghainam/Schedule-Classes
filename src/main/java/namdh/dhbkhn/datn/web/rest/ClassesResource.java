@@ -22,11 +22,6 @@ public class ClassesResource {
         this.classNameService = classNameService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ClassesOutputDTO> create(@RequestBody ClassesInputDTO classNameInputDTO) {
-        return new ResponseEntity<>(this.classNameService.create(classNameInputDTO), HttpStatus.CREATED);
-    }
-
     @ApiOperation(value = "Create new class", notes = "This endpoint to create new class via Excel file")
     @ApiResponses(
         {

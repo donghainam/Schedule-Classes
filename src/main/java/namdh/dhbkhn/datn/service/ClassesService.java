@@ -25,23 +25,6 @@ public class ClassesService {
         this.classesRepository = classesRepository;
     }
 
-    public ClassesOutputDTO create(ClassesInputDTO classesInputDTO) {
-        ClassesOutputDTO classNameOutputDTO;
-        Classes classes = new Classes();
-        classes.setName(classesInputDTO.getName());
-        classes.setClassCode(classesInputDTO.getClassCode());
-        classes.setCourseCode(classesInputDTO.getCourseCode());
-        classes.setStartWeek(classesInputDTO.getStartWeek());
-        classes.setNumberOfLessons(classesInputDTO.getNumberOfLessons());
-        classes.setSemester(classesInputDTO.getSemester());
-        classes.setCondition(classesInputDTO.getCondition());
-        classes.setCountCondition(0);
-        classes.setCountWeekStudied(0);
-        classesRepository.save(classes);
-        classNameOutputDTO = new ClassesOutputDTO(classes);
-        return classNameOutputDTO;
-    }
-
     public List<Classes> importClassList(InputStream inputStream) {
         List<ClassesOutputDTO> classNameList = readExcelFileClassList(inputStream);
         List<Classes> result = new ArrayList<>();
@@ -125,10 +108,10 @@ public class ClassesService {
                         case 6:
                             {
                                 if (cellValue == null) {
-                                    classNameDTO.setCondition(1);
+                                    classNameDTO.setConditions(1);
                                     break;
                                 }
-                                classNameDTO.setCondition(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
+                                classNameDTO.setConditions(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
                                 break;
                             }
                     }

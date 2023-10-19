@@ -8,7 +8,7 @@ public class ClassesInputDTO {
     private int startWeek;
     private int numberOfLessons;
     private String semester;
-    private int condition;
+    private int conditions;
 
     public String getName() {
         return name;
@@ -58,11 +58,11 @@ public class ClassesInputDTO {
         this.semester = semester;
     }
 
-    public int getCondition() {
-        return condition;
+    public int getConditions() {
+        return conditions;
     }
 
-    public void setCondition(int condition) {
-        this.condition = condition;
+    public void setConditions(int conditions) {
+        this.conditions = conditions;
     }
 }
