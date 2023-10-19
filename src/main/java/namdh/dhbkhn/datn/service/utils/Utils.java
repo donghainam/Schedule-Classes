@@ -84,6 +84,18 @@ public class Utils {
         return null;
     }
 
+    /**
+     * Convert from 20231.0 to 20231
+     * @param text
+     * @return handled .0
+     */
+    public static String handleDoubleNumber(String text) {
+        if (text != null) {
+            return text.substring(0, text.indexOf("."));
+        }
+        return null;
+    }
+
     public static boolean isAllSpaces(String text) {
         return StringUtils.isBlank(text) && StringUtils.isNotEmpty(text);
     }

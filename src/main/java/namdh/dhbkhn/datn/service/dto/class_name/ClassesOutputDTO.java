@@ -1,42 +1,34 @@
-package namdh.dhbkhn.datn.domain;
+package namdh.dhbkhn.datn.service.dto.class_name;
 
-import java.io.Serializable;
-import javax.persistence.*;
+import namdh.dhbkhn.datn.domain.Classes;
 
-@Entity
-@Table(name = "class_name")
-public class ClassName extends AbstractAuditingEntity implements Serializable {
+public class ClassesOutputDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "class_code")
     private int classCode;
-
-    @Column(name = "course_code")
     private String courseCode;
-
-    @Column(name = "start_week")
     private int startWeek;
-
-    @Column(name = "number_of_lessons")
     private int numberOfLessons;
-
-    @Column(name = "semester")
     private String semester;
-
-    @Column(name = "condition")
     private int condition;
-
-    @Column(name = "count_condition")
     private int countCondition;
+    private int countWeekStudied;
 
-    @Column(name = "count_week_studied")
-    private int cntWeekStudied;
+    public ClassesOutputDTO() {}
+
+    public ClassesOutputDTO(Classes classes) {
+        this.id = classes.getId();
+        this.name = classes.getName();
+        this.classCode = classes.getClassCode();
+        this.courseCode = classes.getCourseCode();
+        this.startWeek = classes.getStartWeek();
+        this.numberOfLessons = classes.getNumberOfLessons();
+        this.semester = classes.getSemester();
+        this.condition = classes.getCondition();
+        this.countCondition = classes.getCountCondition();
+        this.countWeekStudied = classes.getCountWeekStudied();
+    }
 
     public Long getId() {
         return id;
@@ -110,11 +102,11 @@ public class ClassName extends AbstractAuditingEntity implements Serializable {
         this.countCondition = countCondition;
     }
 
-    public int getCntWeekStudied() {
-        return cntWeekStudied;
+    public int getCountWeekStudied() {
+        return countWeekStudied;
     }
 
-    public void setCntWeekStudied(int cntWeekStudied) {
-        this.cntWeekStudied = cntWeekStudied;
+    public void setCountWeekStudied(int countWeekStudied) {
+        this.countWeekStudied = countWeekStudied;
     }
 }
