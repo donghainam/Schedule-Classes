@@ -8,7 +8,7 @@
 
     <!--    Create new table ClassRoom    -->
     <changeSet id="v1.0.1" author="namdh">
-        <createTable tableName="class_room">
+        <createTable tableName="classroom">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

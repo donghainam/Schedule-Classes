@@ -1,8 +1,8 @@
 package namdh.dhbkhn.datn.service;
 
 import java.util.Optional;
-import namdh.dhbkhn.datn.domain.ClassRoom;
-import namdh.dhbkhn.datn.repository.ClassRoomRepository;
+import namdh.dhbkhn.datn.domain.Classroom;
+import namdh.dhbkhn.datn.repository.ClassroomRepository;
 import namdh.dhbkhn.datn.service.dto.class_room.ClassRoomInputDTO;
 import namdh.dhbkhn.datn.service.dto.class_room.ClassRoomOutputDTO;
 import org.springframework.stereotype.Service;
@@ -10,21 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ClassRoomService {
+public class ClassroomService {
 
-    private final ClassRoomRepository classRoomRepository;
+    private final ClassroomRepository classroomRepository;
 
-    public ClassRoomService(ClassRoomRepository classRoomRepository) {
-        this.classRoomRepository = classRoomRepository;
+    public ClassroomService(ClassroomRepository classRoomRepository) {
+        this.classroomRepository = classRoomRepository;
     }
 
     public ClassRoomOutputDTO create(ClassRoomInputDTO classRoomInputDTO) {
-        Optional<ClassRoom> optional = classRoomRepository.findByName(classRoomInputDTO.getName());
+        Optional<Classroom> optional = classroomRepository.findByName(classRoomInputDTO.getName());
         ClassRoomOutputDTO classRoomOutputDTO;
         if (!optional.isPresent()) {
-            ClassRoom classRoom = new ClassRoom();
+            Classroom classRoom = new Classroom();
             classRoom.setName(classRoomInputDTO.getName());
-            classRoomRepository.save(classRoom);
+            classroomRepository.save(classRoom);
             classRoomOutputDTO = new ClassRoomOutputDTO(classRoom);
         } else {
             classRoomOutputDTO = new ClassRoomOutputDTO(optional.get());

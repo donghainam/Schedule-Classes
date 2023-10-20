@@ -4,8 +4,8 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "class_room")
-public class ClassRoom extends AbstractAuditingEntity<Long> implements Serializable {
+@Table(name = "classroom")
+public class Classroom extends AbstractAuditingEntity<Long> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

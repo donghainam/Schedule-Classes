@@ -1,6 +1,6 @@
 package namdh.dhbkhn.datn.service.dto.class_room;
 
-import namdh.dhbkhn.datn.domain.ClassRoom;
+import namdh.dhbkhn.datn.domain.Classroom;
 
 public class ClassRoomOutputDTO {
 
@@ -9,7 +9,7 @@ public class ClassRoomOutputDTO {
 
     public ClassRoomOutputDTO() {}
 
-    public ClassRoomOutputDTO(ClassRoom classRoom) {
+    public ClassRoomOutputDTO(Classroom classRoom) {
         this.id = classRoom.getId();
         this.name = classRoom.getName();
     }

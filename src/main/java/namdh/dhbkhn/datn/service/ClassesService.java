@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import namdh.dhbkhn.datn.domain.Classes;
 import namdh.dhbkhn.datn.repository.ClassesRepository;
-import namdh.dhbkhn.datn.service.dto.class_name.ClassesInputDTO;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
@@ -25,9 +24,8 @@ public class ClassesService {
         this.classesRepository = classesRepository;
     }
 
-    public List<Classes> importClassList(InputStream inputStream) {
+    public void importClassList(InputStream inputStream) {
         List<ClassesOutputDTO> classNameList = readExcelFileClassList(inputStream);
-        List<Classes> result = new ArrayList<>();
 
         if (classNameList.size() > 0) {
             for (ClassesOutputDTO classesOutputDTO : classNameList) {
@@ -35,11 +33,9 @@ public class ClassesService {
                 if (!optional.isPresent()) {
                     Classes className = new Classes(classesOutputDTO);
                     classesRepository.save(className);
-                    result.add(className);
                 }
             }
         }
-        return result;
     }
 
     private List<ClassesOutputDTO> readExcelFileClassList(InputStream inputStream) {
@@ -53,7 +49,7 @@ public class ClassesService {
                     continue;
                 }
 
-                // Read cells and set value for book object
+                // Read cells and set value for classes object
                 ClassesOutputDTO classNameDTO = new ClassesOutputDTO();
                 for (int i = 0; i < 7; i++) {
                     Cell cell = row.getCell(i);
@@ -65,7 +61,7 @@ public class ClassesService {
                         cellValue = getCellValue(cell);
                     }
 
-                    // Set value for book object
+                    // Set value for classes object
                     switch (i) {
                         case 0:
                             {
