@@ -5,9 +5,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import namdh.dhbkhn.datn.domain.ClassName;
-import namdh.dhbkhn.datn.repository.ClassNameRepository;
-import namdh.dhbkhn.datn.service.error.AccessForbiddenException;
+import namdh.dhbkhn.datn.domain.Classes;
+import namdh.dhbkhn.datn.repository.ClassesRepository;
+import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
@@ -16,48 +16,41 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class ClassNameService {
+public class ClassesService {
 
-    private final ClassNameRepository classNameRepository;
+    private final ClassesRepository classesRepository;
 
-    private final UserACL userACL;
-
-    public ClassNameService(ClassNameRepository classNameRepository, UserACL userACL) {
-        this.classNameRepository = classNameRepository;
-        this.userACL = userACL;
+    public ClassesService(ClassesRepository classesRepository) {
+        this.classesRepository = classesRepository;
     }
 
-    public List<ClassName> importClassList(InputStream inputStream) {
-        if (!userACL.isUser()) {
-            throw new AccessForbiddenException("error.notUser");
-        }
-
-        List<ClassName> classNameList = readExcelFileClassList(inputStream);
+    public void importClassList(InputStream inputStream) {
+        List<ClassesOutputDTO> classNameList = readExcelFileClassList(inputStream);
 
         if (classNameList.size() > 0) {
-            for (ClassName className : classNameList) {
-                Optional<ClassName> optional = classNameRepository.findByClassCode(className.getClassCode());
+            for (ClassesOutputDTO classesOutputDTO : classNameList) {
+                Optional<Classes> optional = classesRepository.findByClassCode(classesOutputDTO.getClassCode());
                 if (!optional.isPresent()) {
-                    classNameRepository.saveAndFlush(className);
+                    Classes className = new Classes(classesOutputDTO);
+                    classesRepository.save(className);
                 }
             }
         }
-        return classNameList;
     }
 
-    private List<ClassName> readExcelFileClassList(InputStream inputStream) {
-        List<ClassName> result = new ArrayList<>();
+    private List<ClassesOutputDTO> readExcelFileClassList(InputStream inputStream) {
+        List<ClassesOutputDTO> result = new ArrayList<>();
         try (Workbook workbook = WorkbookFactory.create(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
 
             for (Row row : sheet) {
-                if (row.getRowNum() == 0) {
+                if (row.getRowNum() == 0 || row.getRowNum() == 1) {
                     // Ignore header
                     continue;
                 }
 
-                // Read cells and set value for book object
-                ClassName className = new ClassName();
+                // Read cells and set value for classes object
+                ClassesOutputDTO classNameDTO = new ClassesOutputDTO();
                 for (int i = 0; i < 7; i++) {
                     Cell cell = row.getCell(i);
                     if (cell == null && i != 1 && i != 3 && i != 6) {
@@ -68,58 +61,58 @@ public class ClassNameService {
                         cellValue = getCellValue(cell);
                     }
 
-                    // Set value for book object
+                    // Set value for classes object
                     switch (i) {
                         case 0:
                             {
-                                className.setSemester(Utils.handleWhitespace(cellValue.toString()));
+                                classNameDTO.setSemester(Utils.handleDoubleNumber(cellValue.toString()));
                                 break;
                             }
                         case 1:
                             {
                                 if (cellValue == null) {
-                                    className.setName(null);
+                                    classNameDTO.setName(null);
                                     break;
                                 }
-                                className.setName(Utils.handleWhitespace(cellValue.toString()));
+                                classNameDTO.setName(Utils.handleWhitespace(cellValue.toString()));
                                 break;
                             }
                         case 2:
                             {
-                                className.setClassCode(Integer.parseInt(Utils.handleWhitespace(cellValue.toString())));
+                                classNameDTO.setClassCode(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
                                 break;
                             }
                         case 3:
                             {
                                 if (cellValue == null) {
-                                    className.setCourseCode(null);
+                                    classNameDTO.setCourseCode(null);
                                     break;
                                 }
-                                className.setCourseCode(Utils.handleWhitespace(cellValue.toString()));
+                                classNameDTO.setCourseCode(Utils.handleWhitespace(cellValue.toString()));
                                 break;
                             }
                         case 4:
                             {
-                                className.setStartWeek(Integer.parseInt(Utils.handleWhitespace(cellValue.toString())));
+                                classNameDTO.setStartWeek(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
                                 break;
                             }
                         case 5:
                             {
-                                className.setNumberOfLessons(Integer.parseInt(Utils.handleWhitespace(cellValue.toString())));
+                                classNameDTO.setNumberOfLessons(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
                                 break;
                             }
                         case 6:
                             {
                                 if (cellValue == null) {
-                                    className.setCondition(1);
+                                    classNameDTO.setConditions(1);
                                     break;
                                 }
-                                className.setCondition(Integer.parseInt(Utils.handleWhitespace(cellValue.toString())));
+                                classNameDTO.setConditions(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
                                 break;
                             }
                     }
                 }
-                result.add(className);
+                result.add(classNameDTO);
             }
 
             workbook.close();

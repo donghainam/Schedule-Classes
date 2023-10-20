@@ -8,7 +8,7 @@
 
     <!--    Create new table ClassRoom    -->
     <changeSet id="v1.0.1" author="namdh">
-        <createTable tableName="class_room">
+        <createTable tableName="classroom">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -22,25 +22,25 @@
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
-        <createTable tableName="class_name">
+        <createTable tableName="classes">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)"/>
-            <column name="class_code" type="int">
+            <column name="class_code" type="int" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
             <column name="course_code" type="varchar(255)"/>
-            <column name="start_week" type="int"/>
-            <column name="number_of_lessons" type="int">
+            <column name="start_week" type="int" defaultValueNumeric="0"/>
+            <column name="number_of_lessons" type="int" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
             <column name="semester" type="varchar(25)">
                 <constraints nullable="false"/>
             </column>
-            <column name="condition" type="int"/>
-            <column name="count_condition" type="int"/>
-            <column name="count_week_studied" type="int"/>
+            <column name="conditions" type="int" defaultValueNumeric="1"/>
+            <column name="count_condition" type="int" defaultValueNumeric="0"/>
+            <column name="count_week_studied" type="int" defaultValueNumeric="0"/>
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>

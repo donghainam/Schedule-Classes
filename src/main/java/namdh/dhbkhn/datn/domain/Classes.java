@@ -2,10 +2,12 @@ package namdh.dhbkhn.datn.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import namdh.dhbkhn.datn.service.dto.class_name.ClassesInputDTO;
+import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
 
 @Entity
-@Table(name = "class_name")
-public class ClassName extends AbstractAuditingEntity implements Serializable {
+@Table(name = "classes")
+public class Classes extends AbstractAuditingEntity<Long> implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +31,39 @@ public class ClassName extends AbstractAuditingEntity implements Serializable {
     @Column(name = "semester")
     private String semester;
 
-    @Column(name = "condition")
-    private int condition;
+    @Column(name = "conditions")
+    private int conditions;
 
     @Column(name = "count_condition")
     private int countCondition;
 
     @Column(name = "count_week_studied")
-    private int cntWeekStudied;
+    private int countWeekStudied;
+
+    public Classes() {}
+
+    public Classes(ClassesInputDTO classesInputDTO) {
+        this.name = classesInputDTO.getName();
+        this.classCode = classesInputDTO.getClassCode();
+        this.courseCode = classesInputDTO.getCourseCode();
+        this.startWeek = classesInputDTO.getStartWeek();
+        this.numberOfLessons = classesInputDTO.getNumberOfLessons();
+        this.semester = classesInputDTO.getSemester();
+        this.conditions = classesInputDTO.getConditions();
+    }
+
+    public Classes(ClassesOutputDTO classesOutputDTO) {
+        this.id = classesOutputDTO.getId();
+        this.name = classesOutputDTO.getName();
+        this.classCode = classesOutputDTO.getClassCode();
+        this.courseCode = classesOutputDTO.getCourseCode();
+        this.startWeek = classesOutputDTO.getStartWeek();
+        this.numberOfLessons = classesOutputDTO.getNumberOfLessons();
+        this.semester = classesOutputDTO.getSemester();
+        this.conditions = classesOutputDTO.getConditions();
+        this.countCondition = classesOutputDTO.getCountCondition();
+        this.countWeekStudied = classesOutputDTO.getCountWeekStudied();
+    }
 
     public Long getId() {
         return id;
@@ -94,12 +121,12 @@ public class ClassName extends AbstractAuditingEntity implements Serializable {
         this.semester = semester;
     }
 
-    public int getCondition() {
-        return condition;
+    public int getConditions() {
+        return conditions;
     }
 
-    public void setCondition(int condition) {
-        this.condition = condition;
+    public void setConditions(int conditions) {
+        this.conditions = conditions;
     }
 
     public int getCountCondition() {
@@ -110,11 +137,11 @@ public class ClassName extends AbstractAuditingEntity implements Serializable {
         this.countCondition = countCondition;
     }
 
-    public int getCntWeekStudied() {
-        return cntWeekStudied;
+    public int getCountWeekStudied() {
+        return countWeekStudied;
     }
 
-    public void setCntWeekStudied(int cntWeekStudied) {
-        this.cntWeekStudied = cntWeekStudied;
+    public void setCountWeekStudied(int countWeekStudied) {
+        this.countWeekStudied = countWeekStudied;
     }
 }
