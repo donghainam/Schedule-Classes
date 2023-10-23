@@ -1,17 +1,17 @@
-package namdh.dhbkhn.datn.service.dto.class_room;
+package namdh.dhbkhn.datn.service.dto.classroom;
 
 import namdh.dhbkhn.datn.domain.Classroom;
 
-public class ClassRoomOutputDTO {
+public class ClassroomOutputDTO {
 
     private Long id;
     private String name;
 
-    public ClassRoomOutputDTO() {}
+    public ClassroomOutputDTO() {}
 
-    public ClassRoomOutputDTO(Classroom classRoom) {
-        this.id = classRoom.getId();
-        this.name = classRoom.getName();
+    public ClassroomOutputDTO(Classroom classroom) {
+        this.id = classroom.getId();
+        this.name = classroom.getName();
     }
 
     public Long getId() {
