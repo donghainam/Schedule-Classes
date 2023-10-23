@@ -1,6 +1,6 @@
-package namdh.dhbkhn.datn.service.dto.class_room;
+package namdh.dhbkhn.datn.service.dto.classroom;
 
-public class ClassRoomInputDTO {
+public class ClassroomInputDTO {
 
     private String name;
 

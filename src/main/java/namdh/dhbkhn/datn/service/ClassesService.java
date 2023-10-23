@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import namdh.dhbkhn.datn.domain.Classes;
 import namdh.dhbkhn.datn.repository.ClassesRepository;
-import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
+import namdh.dhbkhn.datn.service.dto.classes.ClassesOutputDTO;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
@@ -50,7 +50,7 @@ public class ClassesService {
                 }
 
                 // Read cells and set value for classes object
-                ClassesOutputDTO classNameDTO = new ClassesOutputDTO();
+                ClassesOutputDTO classesOutputDTO = new ClassesOutputDTO();
                 for (int i = 0; i < 7; i++) {
                     Cell cell = row.getCell(i);
                     if (cell == null && i != 1 && i != 3 && i != 6) {
@@ -65,54 +65,54 @@ public class ClassesService {
                     switch (i) {
                         case 0:
                             {
-                                classNameDTO.setSemester(Utils.handleDoubleNumber(cellValue.toString()));
+                                classesOutputDTO.setSemester(Utils.handleDoubleNumber(cellValue.toString()));
                                 break;
                             }
                         case 1:
                             {
                                 if (cellValue == null) {
-                                    classNameDTO.setName(null);
+                                    classesOutputDTO.setName(null);
                                     break;
                                 }
-                                classNameDTO.setName(Utils.handleWhitespace(cellValue.toString()));
+                                classesOutputDTO.setName(Utils.handleWhitespace(cellValue.toString()));
                                 break;
                             }
                         case 2:
                             {
-                                classNameDTO.setClassCode(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
+                                classesOutputDTO.setClassCode(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
                                 break;
                             }
                         case 3:
                             {
                                 if (cellValue == null) {
-                                    classNameDTO.setCourseCode(null);
+                                    classesOutputDTO.setCourseCode(null);
                                     break;
                                 }
-                                classNameDTO.setCourseCode(Utils.handleWhitespace(cellValue.toString()));
+                                classesOutputDTO.setCourseCode(Utils.handleWhitespace(cellValue.toString()));
                                 break;
                             }
                         case 4:
                             {
-                                classNameDTO.setStartWeek(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
+                                classesOutputDTO.setStartWeek(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
                                 break;
                             }
                         case 5:
                             {
-                                classNameDTO.setNumberOfLessons(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
+                                classesOutputDTO.setNumberOfLessons(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
                                 break;
                             }
                         case 6:
                             {
                                 if (cellValue == null) {
-                                    classNameDTO.setConditions(1);
+                                    classesOutputDTO.setConditions(1);
                                     break;
                                 }
-                                classNameDTO.setConditions(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
+                                classesOutputDTO.setConditions(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
                                 break;
                             }
                     }
                 }
-                result.add(classNameDTO);
+                result.add(classesOutputDTO);
             }
 
             workbook.close();

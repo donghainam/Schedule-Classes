@@ -6,6 +6,4 @@ public enum WeekDay {
     WED,
     THU,
     FRI,
-    SAT,
-    SUN,
 }

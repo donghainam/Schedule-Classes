@@ -22,6 +22,23 @@
             <column name="last_modified_by" type="varchar(50)"/>
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
+        <createTable tableName="classroom_status">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="classroom_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="week" type="int" defaultValueNumeric="0"/>
+            <column name="status" type="boolean" defaultValue="false"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="classroom_status"
+                                 baseColumnNames="classroom_id"
+                                 constraintName="fk_classroom_status_classroom"
+                                 referencedTableName="classroom"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+
         <createTable tableName="classes">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>

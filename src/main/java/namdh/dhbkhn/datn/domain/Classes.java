@@ -2,8 +2,8 @@ package namdh.dhbkhn.datn.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import namdh.dhbkhn.datn.service.dto.class_name.ClassesInputDTO;
-import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
+import namdh.dhbkhn.datn.service.dto.classes.ClassesInputDTO;
+import namdh.dhbkhn.datn.service.dto.classes.ClassesOutputDTO;
 
 @Entity
 @Table(name = "classes")
