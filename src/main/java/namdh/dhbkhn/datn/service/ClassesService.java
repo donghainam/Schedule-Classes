@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import namdh.dhbkhn.datn.domain.Classes;
 import namdh.dhbkhn.datn.repository.ClassesRepository;
-import namdh.dhbkhn.datn.service.dto.classes.ClassesOutputDTO;
+import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;

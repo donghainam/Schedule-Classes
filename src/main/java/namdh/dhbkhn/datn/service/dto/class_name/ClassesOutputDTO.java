@@ -1,68 +1,33 @@
-package namdh.dhbkhn.datn.domain;
+package namdh.dhbkhn.datn.service.dto.class_name;
 
-import java.io.Serializable;
-import javax.persistence.*;
-import namdh.dhbkhn.datn.service.dto.class_name.ClassesInputDTO;
-import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
+import namdh.dhbkhn.datn.domain.Classes;
 
-@Entity
-@Table(name = "classes")
-public class Classes extends AbstractAuditingEntity<Long> implements Serializable {
+public class ClassesOutputDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "class_code")
     private int classCode;
-
-    @Column(name = "course_code")
     private String courseCode;
-
-    @Column(name = "start_week")
     private int startWeek;
-
-    @Column(name = "number_of_lessons")
     private int numberOfLessons;
-
-    @Column(name = "semester")
     private String semester;
-
-    @Column(name = "conditions")
     private int conditions;
-
-    @Column(name = "count_condition")
     private int countCondition;
-
-    @Column(name = "count_week_studied")
     private int countWeekStudied;
 
-    public Classes() {}
+    public ClassesOutputDTO() {}
 
-    public Classes(ClassesInputDTO classesInputDTO) {
-        this.name = classesInputDTO.getName();
-        this.classCode = classesInputDTO.getClassCode();
-        this.courseCode = classesInputDTO.getCourseCode();
-        this.startWeek = classesInputDTO.getStartWeek();
-        this.numberOfLessons = classesInputDTO.getNumberOfLessons();
-        this.semester = classesInputDTO.getSemester();
-        this.conditions = classesInputDTO.getConditions();
-    }
-
-    public Classes(ClassesOutputDTO classesOutputDTO) {
-        this.id = classesOutputDTO.getId();
-        this.name = classesOutputDTO.getName();
-        this.classCode = classesOutputDTO.getClassCode();
-        this.courseCode = classesOutputDTO.getCourseCode();
-        this.startWeek = classesOutputDTO.getStartWeek();
-        this.numberOfLessons = classesOutputDTO.getNumberOfLessons();
-        this.semester = classesOutputDTO.getSemester();
-        this.conditions = classesOutputDTO.getConditions();
-        this.countCondition = classesOutputDTO.getCountCondition();
-        this.countWeekStudied = classesOutputDTO.getCountWeekStudied();
+    public ClassesOutputDTO(Classes classes) {
+        this.id = classes.getId();
+        this.name = classes.getName();
+        this.classCode = classes.getClassCode();
+        this.courseCode = classes.getCourseCode();
+        this.startWeek = classes.getStartWeek();
+        this.numberOfLessons = classes.getNumberOfLessons();
+        this.semester = classes.getSemester();
+        this.conditions = classes.getConditions();
+        this.countCondition = classes.getCountCondition();
+        this.countWeekStudied = classes.getCountWeekStudied();
     }
 
     public Long getId() {
