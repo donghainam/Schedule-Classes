@@ -18,4 +18,6 @@ public interface ClassesRepository extends JpaRepository<Classes, Long> {
         nativeQuery = true
     )
     List<Classes> getAllClasses(int startWeek, String semester);
+
+    List<Classes> getClassesBySemester(String semester);
 }

@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import namdh.dhbkhn.datn.domain.Classes;
 import namdh.dhbkhn.datn.domain.Classroom;
 import namdh.dhbkhn.datn.domain.ClassroomStatus;
@@ -17,9 +16,6 @@ import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,22 +59,32 @@ public class ScheduleService {
                 rowHead.getCell(j).setCellStyle(style);
             }
 
-            List<ScheduleDTO> scheduleDTOS = this.generateGreedySchedule();
+            List<ScheduleDTO> scheduleDTOS = this.getSchedule();
             this.writeToSheet(sheet, scheduleDTOS, 1);
 
             workbook.write(output);
             return output.toByteArray();
         } catch (IOException e) {
             //            log.error("Error when create Excel file: ", e);
-            //            throw new BadRequestException("error.errorWhileExport" + e, null);
         }
         return new byte[0];
     }
 
-    public List<ScheduleDTO> generateGreedySchedule() {
+    public List<ScheduleDTO> getSchedule() {
         List<ScheduleDTO> result = new ArrayList<>();
 
         // Handle old data
+        List<ClassroomStatus> classroomStatuses = classroomStatusRepository.findAll();
+        for (ClassroomStatus classroomStatus : classroomStatuses) {
+            classroomStatus.setStatus(false);
+        }
+        this.classroomStatusRepository.saveAll(classroomStatuses);
+        List<Classes> clList = classesRepository.getClassesBySemester("20231");
+        for (Classes classes : clList) {
+            classes.setCountWeekStudied(0);
+            classes.setCountCondition(0);
+        }
+        this.classesRepository.saveAll(clList);
 
         for (int i = 1; i < 20; i++) {
             // Get one classroom from db

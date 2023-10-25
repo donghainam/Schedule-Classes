@@ -16,11 +16,6 @@ public class ScheduleResource {
         this.scheduleService = scheduleService;
     }
 
-    /*@GetMapping("")
-    public void schedule() {
-        scheduleService.generateGreedySchedule();
-    }*/
-
     @GetMapping(value = "/excel", produces = { "application/vnd.ms-excel" })
     public ResponseEntity exportSchedule() {
         byte[] bytes = scheduleService.exportSchedule();
