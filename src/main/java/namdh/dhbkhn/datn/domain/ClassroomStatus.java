@@ -18,8 +18,8 @@ public class ClassroomStatus implements Serializable {
     @Column(name = "week")
     private int week;
 
-    @Column(name = "status")
-    private boolean status;
+    @Column(name = "time_note")
+    private String timeNote;
 
     public Long getId() {
         return id;
@@ -45,11 +45,11 @@ public class ClassroomStatus implements Serializable {
         this.week = week;
     }
 
-    public boolean isStatus() {
-        return status;
+    public String getTimeNote() {
+        return timeNote;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setTimeNote(String timeNote) {
+        this.timeNote = timeNote;
     }
 }

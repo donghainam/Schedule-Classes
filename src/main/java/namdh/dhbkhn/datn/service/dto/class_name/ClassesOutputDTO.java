@@ -6,28 +6,28 @@ public class ClassesOutputDTO {
 
     private Long id;
     private String name;
-    private int classCode;
+    private String classNote;
     private String courseCode;
     private int startWeek;
     private int numberOfLessons;
+    private int numberOfWeekStudy;
     private String semester;
     private int conditions;
     private int countCondition;
-    private int countWeekStudied;
 
     public ClassesOutputDTO() {}
 
     public ClassesOutputDTO(Classes classes) {
         this.id = classes.getId();
         this.name = classes.getName();
-        this.classCode = classes.getClassCode();
+        this.classNote = classes.getClassNote();
         this.courseCode = classes.getCourseCode();
         this.startWeek = classes.getStartWeek();
         this.numberOfLessons = classes.getNumberOfLessons();
         this.semester = classes.getSemester();
         this.conditions = classes.getConditions();
         this.countCondition = classes.getCountCondition();
-        this.countWeekStudied = classes.getCountWeekStudied();
+        this.numberOfWeekStudy = classes.getNumberOfWeekStudy();
     }
 
     public Long getId() {
@@ -46,12 +46,12 @@ public class ClassesOutputDTO {
         this.name = name;
     }
 
-    public int getClassCode() {
-        return classCode;
+    public String getClassNote() {
+        return classNote;
     }
 
-    public void setClassCode(int classCode) {
-        this.classCode = classCode;
+    public void setClassNote(String classNote) {
+        this.classNote = classNote;
     }
 
     public String getCourseCode() {
@@ -78,6 +78,14 @@ public class ClassesOutputDTO {
         this.numberOfLessons = numberOfLessons;
     }
 
+    public int getNumberOfWeekStudy() {
+        return numberOfWeekStudy;
+    }
+
+    public void setNumberOfWeekStudy(int numberOfWeekStudy) {
+        this.numberOfWeekStudy = numberOfWeekStudy;
+    }
+
     public String getSemester() {
         return semester;
     }
@@ -100,13 +108,5 @@ public class ClassesOutputDTO {
 
     public void setCountCondition(int countCondition) {
         this.countCondition = countCondition;
-    }
-
-    public int getCountWeekStudied() {
-        return countWeekStudied;
-    }
-
-    public void setCountWeekStudied(int countWeekStudied) {
-        this.countWeekStudied = countWeekStudied;
     }
 }

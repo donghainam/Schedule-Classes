@@ -76,12 +76,12 @@ public class ScheduleService {
         // Handle old data
         List<ClassroomStatus> classroomStatuses = classroomStatusRepository.findAll();
         for (ClassroomStatus classroomStatus : classroomStatuses) {
-            classroomStatus.setStatus(false);
+            classroomStatus.setTimeNote("1,3");
         }
         this.classroomStatusRepository.saveAll(classroomStatuses);
         List<Classes> clList = classesRepository.getClassesBySemester("20231");
         for (Classes classes : clList) {
-            classes.setCountWeekStudied(0);
+            classes.setNumberOfWeekStudy(0);
             classes.setCountCondition(0);
         }
         this.classesRepository.saveAll(clList);
@@ -106,7 +106,7 @@ public class ScheduleService {
                 if (this.schedule(classes, w, result, i, classroom.getName())) {
                     // Handle condition of classes and save week study
                     classes.setCountCondition(classes.getConditions() - 1);
-                    classes.setCountWeekStudied(classes.getCountWeekStudied() + 1);
+                    classes.setNumberOfWeekStudy(classes.getNumberOfWeekStudy() + 1);
                     classesRepository.save(classes);
                     cnt++;
                 } else if (classesList.size() > cnt) {
@@ -114,7 +114,7 @@ public class ScheduleService {
                         classroomStatusRepository.findByClassroomAndWeek(classroom, i),
                         "error.notFound"
                     );
-                    classroomStatus.setStatus(true);
+                    classroomStatus.setTimeNote("1,3");
                     classroomStatusRepository.save(classroomStatus);
                     Long anotherClassroomId = classroomStatusRepository.getClassroomIdByStatus(i);
                     if (anotherClassroomId == null) {
@@ -124,7 +124,7 @@ public class ScheduleService {
                     this.initArray(w, 5, 2);
                     if (this.schedule(classes, w, result, i, classroom.getName())) {
                         classes.setCountCondition(classes.getConditions() - 1);
-                        classes.setCountWeekStudied(classes.getCountWeekStudied() + 1);
+                        classes.setNumberOfWeekStudy(classes.getNumberOfWeekStudy() + 1);
                         classesRepository.save(classes);
                         cnt++;
                     }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClassesRepository extends JpaRepository<Classes, Long> {
-    Optional<Classes> findByClassCode(int classCode);
+    Optional<Classes> findByClassNote(String classNote);
 
     @Query(
         value = "Select * from classes where start_week <= ?1 " +

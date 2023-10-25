@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <!--    Create new table ClassRoom    -->
+    <!--    Create new table ClassRoom, ClassroomStatus, Classes    -->
     <changeSet id="v1.0.1" author="namdh">
         <createTable tableName="classroom">
             <column name="id" type="bigint" autoIncrement="true">
@@ -30,7 +30,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="week" type="int" defaultValueNumeric="0"/>
-            <column name="status" type="boolean" defaultValue="false"/>
+            <column name="time_note" type="varchar(50)"/>
         </createTable>
         <addForeignKeyConstraint baseTableName="classroom_status"
                                  baseColumnNames="classroom_id"
@@ -44,12 +44,15 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(255)"/>
-            <column name="class_code" type="int" defaultValueNumeric="0">
+            <column name="class_note" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="course_code" type="varchar(255)"/>
+            <column name="course_code" type="varchar(50)"/>
             <column name="start_week" type="int" defaultValueNumeric="0"/>
             <column name="number_of_lessons" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number_of_week_study" type="int" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
             <column name="semester" type="varchar(25)">
@@ -57,7 +60,6 @@
             </column>
             <column name="conditions" type="int" defaultValueNumeric="1"/>
             <column name="count_condition" type="int" defaultValueNumeric="0"/>
-            <column name="count_week_studied" type="int" defaultValueNumeric="0"/>
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
