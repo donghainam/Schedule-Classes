@@ -16,8 +16,8 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
     @Column(name = "name")
     private String name;
 
-    @Column(name = "class_code")
-    private int classCode;
+    @Column(name = "class_note")
+    private String classNote;
 
     @Column(name = "course_code")
     private String courseCode;
@@ -28,14 +28,14 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
     @Column(name = "number_of_lessons")
     private int numberOfLessons;
 
+    @Column(name = "number_of_week_study")
+    private int numberOfWeekStudy;
+
     @Column(name = "semester")
     private String semester;
 
     @Column(name = "conditions")
     private int conditions;
-
-    @Column(name = "count_condition")
-    private int countCondition;
 
     @Column(name = "count_week_studied")
     private int countWeekStudied;
@@ -44,10 +44,11 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
 
     public Classes(ClassesInputDTO classesInputDTO) {
         this.name = classesInputDTO.getName();
-        this.classCode = classesInputDTO.getClassCode();
+        this.classNote = classesInputDTO.getClassNote();
         this.courseCode = classesInputDTO.getCourseCode();
         this.startWeek = classesInputDTO.getStartWeek();
         this.numberOfLessons = classesInputDTO.getNumberOfLessons();
+        this.numberOfWeekStudy = classesInputDTO.getNumberOfWeekStudy();
         this.semester = classesInputDTO.getSemester();
         this.conditions = classesInputDTO.getConditions();
     }
@@ -55,14 +56,14 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
     public Classes(ClassesOutputDTO classesOutputDTO) {
         this.id = classesOutputDTO.getId();
         this.name = classesOutputDTO.getName();
-        this.classCode = classesOutputDTO.getClassCode();
+        this.classNote = classesOutputDTO.getClassNote();
         this.courseCode = classesOutputDTO.getCourseCode();
         this.startWeek = classesOutputDTO.getStartWeek();
         this.numberOfLessons = classesOutputDTO.getNumberOfLessons();
+        this.numberOfWeekStudy = classesOutputDTO.getNumberOfWeekStudy();
         this.semester = classesOutputDTO.getSemester();
         this.conditions = classesOutputDTO.getConditions();
-        this.countCondition = classesOutputDTO.getCountCondition();
-        this.countWeekStudied = classesOutputDTO.getCountWeekStudied();
+        this.countWeekStudied = classesOutputDTO.getCountCondition();
     }
 
     public Long getId() {
@@ -81,12 +82,12 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
         this.name = name;
     }
 
-    public int getClassCode() {
-        return classCode;
+    public String getClassNote() {
+        return classNote;
     }
 
-    public void setClassCode(int classCode) {
-        this.classCode = classCode;
+    public void setClassNote(String classNote) {
+        this.classNote = classNote;
     }
 
     public String getCourseCode() {
@@ -113,6 +114,14 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
         this.numberOfLessons = numberOfLessons;
     }
 
+    public int getNumberOfWeekStudy() {
+        return numberOfWeekStudy;
+    }
+
+    public void setNumberOfWeekStudy(int numberOfWeekStudy) {
+        this.numberOfWeekStudy = numberOfWeekStudy;
+    }
+
     public String getSemester() {
         return semester;
     }
@@ -129,19 +138,11 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
         this.conditions = conditions;
     }
 
-    public int getCountCondition() {
-        return countCondition;
-    }
-
-    public void setCountCondition(int countCondition) {
-        this.countCondition = countCondition;
-    }
-
     public int getCountWeekStudied() {
         return countWeekStudied;
     }
 
-    public void setCountWeekStudied(int countWeekStudied) {
-        this.countWeekStudied = countWeekStudied;
+    public void setCountWeekStudied(int countCondition) {
+        this.countWeekStudied = countCondition;
     }
 }

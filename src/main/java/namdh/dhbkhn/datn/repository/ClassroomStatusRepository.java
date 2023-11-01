@@ -10,13 +10,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClassroomStatusRepository extends JpaRepository<ClassroomStatus, Long> {
-    @Query(
-        value = "Select classroom_id from classroom_status where week = ?1 and status is false " + "order by id desc limit 0, 1",
-        nativeQuery = true
-    )
-    Long getClassroomIdByStatus(int week);
+    @Query(value = "Select * from classroom_status where week = ?1 and status <= ?2 limit 0, 1", nativeQuery = true)
+    ClassroomStatus getClassroomIdByStatus(int week, int status);
 
-    Optional<ClassroomStatus> findByClassroomAndWeek(Classroom classroom, int week);
+    Optional<ClassroomStatus> findByClassroomIdAndWeek(long classroomId, int week);
 
     List<ClassroomStatus> findAllByClassroomId(long id);
 }

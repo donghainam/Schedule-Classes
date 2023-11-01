@@ -3,10 +3,11 @@ package namdh.dhbkhn.datn.service.dto.class_name;
 public class ClassesInputDTO {
 
     private String name;
-    private int classCode;
+    private String classNote;
     private String courseCode;
     private int startWeek;
     private int numberOfLessons;
+    private int numberOfWeekStudy;
     private String semester;
     private int conditions;
 
@@ -18,12 +19,12 @@ public class ClassesInputDTO {
         this.name = name;
     }
 
-    public int getClassCode() {
-        return classCode;
+    public String getClassNote() {
+        return classNote;
     }
 
-    public void setClassCode(int classCode) {
-        this.classCode = classCode;
+    public void setClassNote(String classNote) {
+        this.classNote = classNote;
     }
 
     public String getCourseCode() {
@@ -48,6 +49,14 @@ public class ClassesInputDTO {
 
     public void setNumberOfLessons(int numberOfLessons) {
         this.numberOfLessons = numberOfLessons;
+    }
+
+    public int getNumberOfWeekStudy() {
+        return numberOfWeekStudy;
+    }
+
+    public void setNumberOfWeekStudy(int numberOfWeekStudy) {
+        this.numberOfWeekStudy = numberOfWeekStudy;
     }
 
     public String getSemester() {

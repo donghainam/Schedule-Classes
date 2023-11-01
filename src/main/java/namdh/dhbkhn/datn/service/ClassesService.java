@@ -11,12 +11,16 @@ import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 public class ClassesService {
+
+    private static final Logger log = LoggerFactory.getLogger(ClassesService.class);
 
     private final ClassesRepository classesRepository;
 
@@ -29,7 +33,7 @@ public class ClassesService {
 
         if (classNameList.size() > 0) {
             for (ClassesOutputDTO classesOutputDTO : classNameList) {
-                Optional<Classes> optional = classesRepository.findByClassCode(classesOutputDTO.getClassCode());
+                Optional<Classes> optional = classesRepository.findByClassNote(classesOutputDTO.getClassNote());
                 if (!optional.isPresent()) {
                     Classes className = new Classes(classesOutputDTO);
                     classesRepository.save(className);
@@ -51,65 +55,56 @@ public class ClassesService {
 
                 // Read cells and set value for classes object
                 ClassesOutputDTO classesOutputDTO = new ClassesOutputDTO();
-                for (int i = 0; i < 7; i++) {
+                for (int i = 0; i < 8; i++) {
                     Cell cell = row.getCell(i);
-                    if (cell == null && i != 1 && i != 3 && i != 6) {
+                    if (cell == null && i != 1 && i != 3 && i != 7) {
                         throw new BadRequestException("error.fieldNullOrEmpty", (row.getRowNum() + 1) + "-" + (i + 1));
                     }
                     Object cellValue = null;
-                    if (!((i == 1 || i == 3 || i == 6) && cell == null)) {
+                    if (!((i == 1 || i == 3 || i == 7) && cell == null)) {
                         cellValue = getCellValue(cell);
                     }
 
                     // Set value for classes object
                     switch (i) {
                         case 0:
-                            {
-                                classesOutputDTO.setSemester(Utils.handleDoubleNumber(cellValue.toString()));
-                                break;
-                            }
+                            classesOutputDTO.setSemester(Utils.handleDoubleNumber(cellValue.toString()));
+                            break;
                         case 1:
-                            {
-                                if (cellValue == null) {
-                                    classesOutputDTO.setName(null);
-                                    break;
-                                }
-                                classesOutputDTO.setName(Utils.handleWhitespace(cellValue.toString()));
+                            if (cellValue == null) {
+                                classesOutputDTO.setName(null);
                                 break;
                             }
+                            classesOutputDTO.setName(Utils.handleWhitespace(cellValue.toString()));
+                            break;
                         case 2:
-                            {
-                                classesOutputDTO.setClassCode(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
-                                break;
-                            }
+                            classesOutputDTO.setClassNote(Utils.handleWhitespace(cellValue.toString()));
+                            break;
                         case 3:
-                            {
-                                if (cellValue == null) {
-                                    classesOutputDTO.setCourseCode(null);
-                                    break;
-                                }
-                                classesOutputDTO.setCourseCode(Utils.handleWhitespace(cellValue.toString()));
+                            if (cellValue == null) {
+                                classesOutputDTO.setCourseCode(null);
                                 break;
                             }
+                            classesOutputDTO.setCourseCode(Utils.handleWhitespace(cellValue.toString()));
+                            break;
                         case 4:
-                            {
-                                classesOutputDTO.setStartWeek(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
-                                break;
-                            }
+                            classesOutputDTO.setStartWeek(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
+                            break;
                         case 5:
-                            {
-                                classesOutputDTO.setNumberOfLessons(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
-                                break;
-                            }
+                            classesOutputDTO.setNumberOfLessons(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
+                            break;
                         case 6:
-                            {
-                                if (cellValue == null) {
-                                    classesOutputDTO.setConditions(1);
-                                    break;
-                                }
-                                classesOutputDTO.setConditions(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
+                            classesOutputDTO.setNumberOfWeekStudy(
+                                Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())) / classesOutputDTO.getNumberOfLessons()
+                            );
+                            break;
+                        case 7:
+                            if (cellValue == null) {
+                                classesOutputDTO.setConditions(1);
                                 break;
                             }
+                            classesOutputDTO.setConditions(Integer.parseInt(Utils.handleDoubleNumber(cellValue.toString())));
+                            break;
                     }
                 }
                 result.add(classesOutputDTO);
@@ -120,6 +115,7 @@ public class ClassesService {
 
             return result;
         } catch (IOException e) {
+            log.error("Error upload excel file wrong format", e);
             throw new BadRequestException("error.uploadExcelWrongFormat", null);
         }
     }
@@ -144,7 +140,7 @@ public class ClassesService {
                 break;
             case _NONE:
             case BLANK:
-                if (cell.getColumnIndex() == 1 || cell.getColumnIndex() == 3 || cell.getColumnIndex() == 6) {
+                if (cell.getColumnIndex() == 1 || cell.getColumnIndex() == 3 || cell.getColumnIndex() == 7) {
                     break;
                 }
             case ERROR:
