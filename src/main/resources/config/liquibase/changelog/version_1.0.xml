@@ -30,7 +30,8 @@
                 <constraints nullable="false"/>
             </column>
             <column name="week" type="int" defaultValueNumeric="0"/>
-            <column name="time_note" type="varchar(50)"/>
+            <column name="time_note" type="json"/>
+            <column name="status" type="int" defaultValueNumeric="0"/>
         </createTable>
         <addForeignKeyConstraint baseTableName="classroom_status"
                                  baseColumnNames="classroom_id"
@@ -59,7 +60,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="conditions" type="int" defaultValueNumeric="1"/>
-            <column name="count_condition" type="int" defaultValueNumeric="0"/>
+            <column name="count_week_studied" type="int" defaultValueNumeric="0"/>
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>

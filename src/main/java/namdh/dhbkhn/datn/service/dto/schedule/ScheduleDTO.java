@@ -1,14 +1,40 @@
 package namdh.dhbkhn.datn.service.dto.schedule;
 
+import java.util.HashMap;
+import java.util.Map;
 import namdh.dhbkhn.datn.domain.enumeration.WeekDay;
 
 public class ScheduleDTO {
 
-    private String classroom;
-    private int week;
-    private WeekDay day;
-    private String session;
+    private String courseCode;
     private String className;
+    private String classNote;
+    private String classroom;
+    private Map<String, Object> timeNote;
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getClassNote() {
+        return classNote;
+    }
+
+    public void setClassNote(String classNote) {
+        this.classNote = classNote;
+    }
 
     public String getClassroom() {
         return classroom;
@@ -18,35 +44,26 @@ public class ScheduleDTO {
         this.classroom = classroom;
     }
 
-    public int getWeek() {
-        return week;
+    public Map<String, Object> getTimeNote() {
+        return timeNote;
     }
 
-    public void setWeek(int week) {
-        this.week = week;
+    public void setTimeNote(Map<String, Object> timeNote) {
+        this.timeNote = timeNote;
     }
 
-    public WeekDay getDay() {
-        return day;
+    public ScheduleDTO addTimeNote(String key, Object value) {
+        if (this.timeNote == null) {
+            this.timeNote = new HashMap<>();
+        }
+        this.timeNote.put(key, value);
+        return this;
     }
 
-    public void setDay(WeekDay day) {
-        this.day = day;
-    }
-
-    public String getSession() {
-        return session;
-    }
-
-    public void setSession(String session) {
-        this.session = session;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
+    public <T> T getTimeNoteExtra(String key) {
+        if (this.timeNote != null && this.timeNote.containsKey(key)) {
+            return (T) this.timeNote.get(key);
+        }
+        return null;
     }
 }

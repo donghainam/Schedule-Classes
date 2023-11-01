@@ -37,8 +37,8 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
     @Column(name = "conditions")
     private int conditions;
 
-    @Column(name = "count_condition")
-    private int countCondition;
+    @Column(name = "count_week_studied")
+    private int countWeekStudied;
 
     public Classes() {}
 
@@ -63,7 +63,7 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
         this.numberOfWeekStudy = classesOutputDTO.getNumberOfWeekStudy();
         this.semester = classesOutputDTO.getSemester();
         this.conditions = classesOutputDTO.getConditions();
-        this.countCondition = classesOutputDTO.getCountCondition();
+        this.countWeekStudied = classesOutputDTO.getCountCondition();
     }
 
     public Long getId() {
@@ -138,11 +138,11 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
         this.conditions = conditions;
     }
 
-    public int getCountCondition() {
-        return countCondition;
+    public int getCountWeekStudied() {
+        return countWeekStudied;
     }
 
-    public void setCountCondition(int countCondition) {
-        this.countCondition = countCondition;
+    public void setCountWeekStudied(int countCondition) {
+        this.countWeekStudied = countCondition;
     }
 }

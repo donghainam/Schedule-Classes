@@ -13,7 +13,7 @@ public interface ClassesRepository extends JpaRepository<Classes, Long> {
 
     @Query(
         value = "Select * from classes where start_week <= ?1 " +
-        "and count_condition = 0 and count_week_studied < 15 / number_of_lessons " +
+        "and count_week_studied < number_of_week_study " +
         "and upper(semester) like upper(concat('%', ?2, '%')) order by id desc",
         nativeQuery = true
     )

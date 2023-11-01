@@ -11,12 +11,16 @@ import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
 public class ClassesService {
+
+    private static final Logger log = LoggerFactory.getLogger(ClassesService.class);
 
     private final ClassesRepository classesRepository;
 
@@ -111,6 +115,7 @@ public class ClassesService {
 
             return result;
         } catch (IOException e) {
+            log.error("Error upload excel file wrong format", e);
             throw new BadRequestException("error.uploadExcelWrongFormat", null);
         }
     }

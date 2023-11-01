@@ -26,7 +26,7 @@ public class ClassesOutputDTO {
         this.numberOfLessons = classes.getNumberOfLessons();
         this.semester = classes.getSemester();
         this.conditions = classes.getConditions();
-        this.countCondition = classes.getCountCondition();
+        this.countCondition = classes.getCountWeekStudied();
         this.numberOfWeekStudy = classes.getNumberOfWeekStudy();
     }
 

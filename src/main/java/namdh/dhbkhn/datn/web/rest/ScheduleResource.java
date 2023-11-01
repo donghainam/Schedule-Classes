@@ -1,10 +1,11 @@
 package namdh.dhbkhn.datn.web.rest;
 
-import java.io.IOException;
 import namdh.dhbkhn.datn.service.ScheduleService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/schedule")
@@ -16,16 +17,18 @@ public class ScheduleResource {
         this.scheduleService = scheduleService;
     }
 
-    @GetMapping(value = "/excel", produces = { "application/vnd.ms-excel" })
-    public ResponseEntity exportSchedule() {
-        byte[] bytes = scheduleService.exportSchedule();
+    @GetMapping("/excel")
+    public ResponseEntity<Resource> exportSchedule(@RequestParam String semester) {
+        byte[] bytes = scheduleService.exportSchedule(semester);
+        ByteArrayResource resource = new ByteArrayResource(bytes);
         return ResponseEntity
             .ok()
-            .header("content-disposition", "attachment; filename=Schedule.xlsx")
+            .header("content-disposition", "attachment; filename=Schedule_" + semester + ".xlsx")
             .header("Pragma", "public")
             .header("Cache-Control", "no-store")
             .header("Cache-Control", "max-age=0")
             .contentLength(bytes.length)
-            .body(bytes);
+            .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+            .body(resource);
     }
 }
