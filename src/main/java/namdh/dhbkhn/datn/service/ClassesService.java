@@ -7,12 +7,15 @@ import java.util.List;
 import java.util.Optional;
 import namdh.dhbkhn.datn.domain.Classes;
 import namdh.dhbkhn.datn.repository.ClassesRepository;
+import namdh.dhbkhn.datn.service.dto.class_name.ClassesInputDTO;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -149,5 +152,72 @@ public class ClassesService {
                 break;
         }
         return cellValue;
+    }
+
+    public ClassesOutputDTO update(ClassesInputDTO classesInputDTO, long id) {
+        ClassesOutputDTO classesOutputDTO;
+        Classes classes = Utils.requireExists(classesRepository.findById(id), "error.classesNotFound");
+        String className = classesInputDTO.getName();
+        if (Utils.isAllSpaces(className) || className.isEmpty()) {
+            throw new BadRequestException("error.classNameEmptyOrBlank", null);
+        }
+        classes.setName(className);
+        String classNote = classesInputDTO.getClassNote();
+        if (Utils.isAllSpaces(classNote) || classNote.isEmpty()) {
+            throw new BadRequestException("error.classNoteEmptyOrBlank", null);
+        }
+        classes.setClassNote(classNote);
+        String courseCode = classesInputDTO.getCourseCode();
+        if (Utils.isAllSpaces(courseCode) || courseCode.isEmpty()) {
+            throw new BadRequestException("error.courseCodeEmptyOrBlank", null);
+        }
+        classes.setCourseCode(courseCode);
+        int startWeek = classesInputDTO.getStartWeek();
+        if (startWeek < 1 || startWeek > 53) {
+            throw new BadRequestException("error.startWeekIncorrect", null);
+        }
+        classes.setStartWeek(startWeek);
+        int numberOfLessons = classesInputDTO.getNumberOfLessons();
+        if (numberOfLessons < 1 || numberOfLessons > 6) {
+            throw new BadRequestException("error.numberOfLessonsIncorrect", null);
+        }
+        classes.setNumberOfLessons(numberOfLessons);
+        int numberOfWeekStudy = classesInputDTO.getNumberOfWeekStudy();
+        if (numberOfWeekStudy < 1 || numberOfWeekStudy > 21) {
+            throw new BadRequestException("error.startWeekIncorrect", null);
+        }
+        classes.setNumberOfWeekStudy(numberOfWeekStudy);
+        String semester = classesInputDTO.getSemester();
+        if (Utils.isAllSpaces(semester) || semester.isEmpty()) {
+            throw new BadRequestException("error.semesterEmptyOrBlank", null);
+        }
+        classes.setSemester(semester);
+        int conditions = classesInputDTO.getConditions();
+        if (conditions < 1) {
+            throw new BadRequestException("error.conditionsIncorrect", null);
+        }
+        classes.setConditions(conditions);
+        classesOutputDTO = new ClassesOutputDTO(classes);
+        return classesOutputDTO;
+    }
+
+    public Page<ClassesOutputDTO> getAll(Pageable pageable, String name) {
+        Page<ClassesOutputDTO> page;
+        if (name == null) {
+            page = classesRepository.findAllByNameIsNotNull(pageable).map(ClassesOutputDTO::new);
+        } else {
+            page = classesRepository.findAllByNameContainingIgnoreCase(pageable, name).map(ClassesOutputDTO::new);
+        }
+        return page;
+    }
+
+    public ClassesOutputDTO getOne(long id) {
+        Classes classes = Utils.requireExists(classesRepository.findById(id), "error.classesNotFound");
+        return new ClassesOutputDTO(classes);
+    }
+
+    public void delete(long id) {
+        Classes classes = Utils.requireExists(classesRepository.findById(id), "error.classesNotFound");
+        classesRepository.delete(classes);
     }
 }

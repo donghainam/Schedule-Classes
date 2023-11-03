@@ -45,7 +45,7 @@ public class ClassroomResource {
         return new ResponseEntity<>(this.classroomService.update(classroomInputDTO, id), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable(name = "id") long id) {
         this.classroomService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

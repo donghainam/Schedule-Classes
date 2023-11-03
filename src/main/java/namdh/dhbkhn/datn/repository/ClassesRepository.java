@@ -3,6 +3,8 @@ package namdh.dhbkhn.datn.repository;
 import java.util.List;
 import java.util.Optional;
 import namdh.dhbkhn.datn.domain.Classes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,4 +22,8 @@ public interface ClassesRepository extends JpaRepository<Classes, Long> {
     List<Classes> getAllClasses(int startWeek, String semester);
 
     List<Classes> getClassesBySemester(String semester);
+
+    Page<Classes> findAllByNameIsNotNull(Pageable pageable);
+
+    Page<Classes> findAllByNameContainingIgnoreCase(Pageable pageable, String name);
 }
