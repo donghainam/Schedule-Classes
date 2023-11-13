@@ -50,9 +50,9 @@ public class ClassesService {
             for (ClassesOutputDTO classesOutputDTO : classNameList) {
                 Optional<Classes> optional = classesRepository.findByClassNote(classesOutputDTO.getClassNote());
                 if (!optional.isPresent()) {
-                    Classes className = new Classes(classesOutputDTO);
-                    className.setUser(user);
-                    classesRepository.save(className);
+                    Classes classes = new Classes(classesOutputDTO);
+                    classes.setUser(user);
+                    classesRepository.save(classes);
                 }
             }
         }
@@ -71,13 +71,13 @@ public class ClassesService {
 
                 // Read cells and set value for classes object
                 ClassesOutputDTO classesOutputDTO = new ClassesOutputDTO();
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < 9; i++) {
                     Cell cell = row.getCell(i);
-                    if (cell == null && i != 1 && i != 3 && i != 7) {
+                    if (cell == null && i != 1 && i != 3 && i != 7 && i != 8) {
                         throw new BadRequestException("error.fieldNullOrEmpty", (row.getRowNum() + 1) + "-" + (i + 1));
                     }
                     Object cellValue = null;
-                    if (!((i == 1 || i == 3 || i == 7) && cell == null)) {
+                    if (!((i == 1 || i == 3 || i == 7 || i == 8) && cell == null)) {
                         cellValue = getCellValue(cell);
                     }
 
@@ -115,6 +115,13 @@ public class ClassesService {
                             );
                             break;
                         case 7:
+                            if (cellValue == null) {
+                                classesOutputDTO.setDepartmentName(null);
+                                break;
+                            }
+                            classesOutputDTO.setDepartmentName(Utils.handleWhitespace(cellValue.toString()));
+                            break;
+                        case 8:
                             if (cellValue == null) {
                                 classesOutputDTO.setConditions(1);
                                 break;
@@ -156,7 +163,7 @@ public class ClassesService {
                 break;
             case _NONE:
             case BLANK:
-                if (cell.getColumnIndex() == 1 || cell.getColumnIndex() == 3 || cell.getColumnIndex() == 7) {
+                if (cell.getColumnIndex() == 1 || cell.getColumnIndex() == 3 || cell.getColumnIndex() == 7 || cell.getColumnIndex() == 8) {
                     break;
                 }
             case ERROR:

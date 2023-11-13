@@ -44,6 +44,9 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
     @Column(name = "count_week_studied")
     private int countWeekStudied;
 
+    @Column(name = "department_name")
+    private String departmentName;
+
     public Classes() {}
 
     public Classes(ClassesInputDTO classesInputDTO) {
@@ -55,6 +58,7 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
         this.numberOfWeekStudy = classesInputDTO.getNumberOfWeekStudy();
         this.semester = classesInputDTO.getSemester();
         this.conditions = classesInputDTO.getConditions();
+        this.departmentName = classesInputDTO.getDepartmentName();
     }
 
     public Classes(ClassesOutputDTO classesOutputDTO) {
@@ -68,6 +72,7 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
         this.semester = classesOutputDTO.getSemester();
         this.conditions = classesOutputDTO.getConditions();
         this.countWeekStudied = classesOutputDTO.getCountCondition();
+        this.departmentName = classesOutputDTO.getDepartmentName();
     }
 
     public Long getId() {
@@ -156,5 +161,13 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
 
     public void setCountWeekStudied(int countCondition) {
         this.countWeekStudied = countCondition;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 }

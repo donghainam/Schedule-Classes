@@ -10,6 +10,7 @@ public class ClassesInputDTO {
     private int numberOfWeekStudy;
     private String semester;
     private int conditions;
+    private String departmentName;
 
     public String getName() {
         return name;
@@ -73,5 +74,13 @@ public class ClassesInputDTO {
 
     public void setConditions(int conditions) {
         this.conditions = conditions;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 }
