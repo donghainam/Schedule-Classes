@@ -8,10 +8,14 @@ import java.util.stream.Collectors;
 import namdh.dhbkhn.datn.domain.Classes;
 import namdh.dhbkhn.datn.domain.Classroom;
 import namdh.dhbkhn.datn.domain.ClassroomStatus;
+import namdh.dhbkhn.datn.domain.User;
 import namdh.dhbkhn.datn.repository.ClassesRepository;
 import namdh.dhbkhn.datn.repository.ClassroomRepository;
 import namdh.dhbkhn.datn.repository.ClassroomStatusRepository;
+import namdh.dhbkhn.datn.repository.UserRepository;
+import namdh.dhbkhn.datn.security.SecurityUtils;
 import namdh.dhbkhn.datn.service.dto.schedule.ScheduleDTO;
+import namdh.dhbkhn.datn.service.error.AccessForbiddenException;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
@@ -27,6 +31,10 @@ public class ScheduleService {
 
     private static final Logger log = LoggerFactory.getLogger(ScheduleService.class);
 
+    private final UserACL userACL;
+
+    private final UserRepository userRepository;
+
     private final ClassesRepository classesRepository;
 
     private final ClassroomRepository classroomRepository;
@@ -34,16 +42,23 @@ public class ScheduleService {
     private final ClassroomStatusRepository classroomStatusRepository;
 
     public ScheduleService(
+        UserACL userACL,
+        UserRepository userRepository,
         ClassesRepository classesRepository,
         ClassroomRepository classRoomRepository,
         ClassroomStatusRepository classroomStatusRepository
     ) {
+        this.userACL = userACL;
+        this.userRepository = userRepository;
         this.classesRepository = classesRepository;
         this.classroomRepository = classRoomRepository;
         this.classroomStatusRepository = classroomStatusRepository;
     }
 
     public byte[] exportSchedule(String semester) {
+        if (!userACL.isUser()) {
+            throw new AccessForbiddenException("error.notUser");
+        }
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             Sheet sheet = workbook.createSheet("Schedule");
 
@@ -79,6 +94,7 @@ public class ScheduleService {
 
     public List<ScheduleDTO> getSchedule(String semester) {
         List<ScheduleDTO> result = new ArrayList<>();
+        User user = Utils.requireExists(SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin), "error.userNotFound");
 
         // Handle old data
         List<ClassroomStatus> classroomStatuses = classroomStatusRepository.findAll();
@@ -110,7 +126,7 @@ public class ScheduleService {
                 continue;
             }
             // Get all Classes
-            List<Classes> classesList = classesRepository.getAllClasses(i, semester);
+            List<Classes> classesList = classesRepository.getAllClasses(i, semester, user.getId());
             // Sort by priority
             this.sortByPriority(classesList);
 
@@ -122,7 +138,11 @@ public class ScheduleService {
                     status = 1;
                 }
                 // Get one classroom from db
-                ClassroomStatus classroomStatus = classroomStatusRepository.getClassroomStatusByWeekAndStatus(i, status);
+                ClassroomStatus classroomStatus = classroomStatusRepository.getClassroomStatusByWeekAndStatusAndUserId(
+                    i,
+                    status,
+                    user.getId()
+                );
                 if (classroomStatus == null) {
                     log.info("Classrooms aren't enough for all classes");
                     throw new BadRequestException("error.classroomNotEnough", null);
@@ -158,6 +178,7 @@ public class ScheduleService {
                     );
                     List<String> beginList = classroomStatus.getTimeNoteExtra(String.valueOf(i) + 0);
                     List<String> endList = classroomStatus.getTimeNoteExtra(String.valueOf(i) + 1);
+                    String sessionStr = String.valueOf(j + 1);
                     if (beginList != null && endList != null) {
                         for (int n = 0; n < beginList.size(); n++) {
                             int session = getSession(endList.get(n));
@@ -194,8 +215,8 @@ public class ScheduleService {
                     // TimeNote
                     scheduleDTO.addTimeNote("WeekNote", weekNote);
                     scheduleDTO.addTimeNote("WeekDay", i + 2);
-                    scheduleDTO.addTimeNote("Begin", begin);
-                    scheduleDTO.addTimeNote("End", end);
+                    scheduleDTO.addTimeNote("Begin", sessionStr + begin);
+                    scheduleDTO.addTimeNote("End", sessionStr + end);
                     list.add(scheduleDTO);
                     w[i][j] -= classes.getNumberOfLessons();
                     return;

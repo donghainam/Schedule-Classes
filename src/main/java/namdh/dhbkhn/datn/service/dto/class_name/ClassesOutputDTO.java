@@ -5,6 +5,7 @@ import namdh.dhbkhn.datn.domain.Classes;
 public class ClassesOutputDTO {
 
     private Long id;
+    private Long userId;
     private String name;
     private String classNote;
     private String courseCode;
@@ -19,6 +20,7 @@ public class ClassesOutputDTO {
 
     public ClassesOutputDTO(Classes classes) {
         this.id = classes.getId();
+        this.userId = classes.getUser().getId();
         this.name = classes.getName();
         this.classNote = classes.getClassNote();
         this.courseCode = classes.getCourseCode();
@@ -36,6 +38,14 @@ public class ClassesOutputDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -100,6 +110,14 @@ public class ClassesOutputDTO {
 
     public void setConditions(int conditions) {
         this.conditions = conditions;
+    }
+
+    public int getCountWeekStudied() {
+        return countWeekStudied;
+    }
+
+    public void setCountWeekStudied(int countWeekStudied) {
+        this.countWeekStudied = countWeekStudied;
     }
 
     public int getCountCondition() {

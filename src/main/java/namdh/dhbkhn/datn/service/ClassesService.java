@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import namdh.dhbkhn.datn.domain.Classes;
+import namdh.dhbkhn.datn.domain.User;
 import namdh.dhbkhn.datn.repository.ClassesRepository;
+import namdh.dhbkhn.datn.repository.UserRepository;
+import namdh.dhbkhn.datn.security.SecurityUtils;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesInputDTO;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
+import namdh.dhbkhn.datn.service.error.AccessForbiddenException;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
@@ -25,13 +29,21 @@ public class ClassesService {
 
     private static final Logger log = LoggerFactory.getLogger(ClassesService.class);
 
+    private final UserACL userACL;
+    private final UserRepository userRepository;
     private final ClassesRepository classesRepository;
 
-    public ClassesService(ClassesRepository classesRepository) {
+    public ClassesService(UserACL userACL, UserRepository userRepository, ClassesRepository classesRepository) {
+        this.userACL = userACL;
+        this.userRepository = userRepository;
         this.classesRepository = classesRepository;
     }
 
     public void importClassList(InputStream inputStream) {
+        if (!userACL.isUser()) {
+            throw new AccessForbiddenException("error.notUser");
+        }
+        User user = Utils.requireExists(SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin), "error.userNotFound");
         List<ClassesOutputDTO> classNameList = readExcelFileClassList(inputStream);
 
         if (classNameList.size() > 0) {
@@ -39,6 +51,7 @@ public class ClassesService {
                 Optional<Classes> optional = classesRepository.findByClassNote(classesOutputDTO.getClassNote());
                 if (!optional.isPresent()) {
                     Classes className = new Classes(classesOutputDTO);
+                    className.setUser(user);
                     classesRepository.save(className);
                 }
             }
@@ -155,8 +168,14 @@ public class ClassesService {
     }
 
     public ClassesOutputDTO update(ClassesInputDTO classesInputDTO, long id) {
+        if (!userACL.isUser()) {
+            throw new AccessForbiddenException("error.notUser");
+        }
         ClassesOutputDTO classesOutputDTO;
         Classes classes = Utils.requireExists(classesRepository.findById(id), "error.classesNotFound");
+        if (!userACL.canUpdate(classes.getUser().getId())) {
+            throw new AccessForbiddenException("error.notUserCreateClass");
+        }
         String className = classesInputDTO.getName();
         if (Utils.isAllSpaces(className) || className.isEmpty()) {
             throw new BadRequestException("error.classNameEmptyOrBlank", null);
@@ -202,22 +221,38 @@ public class ClassesService {
     }
 
     public Page<ClassesOutputDTO> getAll(Pageable pageable, String name) {
+        if (!userACL.isUser()) {
+            throw new AccessForbiddenException("error.notUser");
+        }
+        User user = Utils.requireExists(SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin), "error.userNotFound");
         Page<ClassesOutputDTO> page;
         if (name == null) {
-            page = classesRepository.findAllByNameIsNotNull(pageable).map(ClassesOutputDTO::new);
+            page = classesRepository.findAllByUserIdAndNameIsNotNull(pageable, user.getId()).map(ClassesOutputDTO::new);
         } else {
-            page = classesRepository.findAllByNameContainingIgnoreCase(pageable, name).map(ClassesOutputDTO::new);
+            page = classesRepository.findAllByNameContainingIgnoreCaseAndUserId(pageable, name, user.getId()).map(ClassesOutputDTO::new);
         }
         return page;
     }
 
     public ClassesOutputDTO getOne(long id) {
+        if (!userACL.isUser()) {
+            throw new AccessForbiddenException("error.notUser");
+        }
         Classes classes = Utils.requireExists(classesRepository.findById(id), "error.classesNotFound");
+        if (!userACL.canUpdate(classes.getUser().getId())) {
+            throw new AccessForbiddenException("error.notUserCreateClass");
+        }
         return new ClassesOutputDTO(classes);
     }
 
     public void delete(long id) {
+        if (!userACL.isUser()) {
+            throw new AccessForbiddenException("error.notUser");
+        }
         Classes classes = Utils.requireExists(classesRepository.findById(id), "error.classesNotFound");
+        if (!userACL.canUpdate(classes.getUser().getId())) {
+            throw new AccessForbiddenException("error.notUserCreateClass");
+        }
         classesRepository.delete(classes);
     }
 }

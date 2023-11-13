@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
-    Optional<Classroom> findByName(String name);
+    Optional<Classroom> findByNameAndUserId(String name, Long userId);
 
     @Query(value = "Select * from classroom where status is false order by id desc limit 0, 1", nativeQuery = true)
     Classroom getLastClassroomByStatusIsFalse();
 
-    Page<Classroom> findAllByNameIsNotNull(Pageable pageable);
+    Page<Classroom> getAllByUserIdAndNameIsNotNull(Pageable pageable, Long userId);
 
-    Page<Classroom> findAllByNameContainingIgnoreCase(Pageable pageable, String name);
+    Page<Classroom> findAllByNameContainingIgnoreCaseAndUserId(Pageable pageable, String name, Long userId);
 }
