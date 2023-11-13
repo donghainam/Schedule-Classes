@@ -1,19 +1,40 @@
 {
   "home": {
-    "title": "Chào mừng bạn đến với Java Hipster!",
-    "subtitle": "Đây là trang chủ của bạn",
+    "title": "Chào mừng bạn đến với trang Web lập thời khóa biểu lớp học!",
+    "subtitle": "Chúng tôi vô cùng vui khi bạn đến và sử dụng dịch vụ của chúng tôi. Trang web này được thiết kế để giúp bạn quản lý và tổ chức thời gian học tập một cách dễ dàng và hiệu quả. Bất kể bạn là học sinh, sinh viên, giáo viên hoặc người quản lý lớp học, chúng tôi hy vọng rằng trang web này sẽ đáp ứng và phục vụ nhu cầu của bạn.",
+    "about-services": "Đây là mô tả dịch vụ của chúng tôi. Đây là mô tả dịch vụ của chúng tôi. Đây là mô tả dịch vụ của chúng tôi. Đây là mô tả dịch vụ của chúng tôi. Đây là mô tả dịch vụ của chúng tôi. Đây là mô tả dịch vụ của chúng tôi.",
+    "services": "Dịch vụ",
+    "service-title": {
+      "name-1": "Lập lịch học",
+      "name-2": "CRUD",
+      "name-3": "Nhập & xuất dữ liệu",
+      "detail-1": "Từ dữ liệu về các lớp học, các phòng học chúng tôi thực hiện sắp xếp lịch học dựa vào thuật toán tối ưu.",
+      "detail-2": "Từ dữ liệu về các lớp học, các phòng học chúng tôi thực hiện sắp xếp lịch học dựa vào thuật toán tối ưu.",
+      "detail-3": "Từ dữ liệu về các lớp học, các phòng học chúng tôi thực hiện sắp xếp lịch học dựa vào thuật toán tối ưu."
+    },
+    "user-manual": {
+      "step-1": "Bước 1:",
+      "step-title-1": "Đăng ký & Đăng nhập",
+      "step-detail-1": "Đăng ký tài khoản mới, chờ quản trị viên phê duyệt. Đăng nhập vào hệ thống bằng tài khoản đã được phê duyệt.",
+      "step-2": "Bước 2:",
+      "step-title-2": "Register & Sign In",
+      "step-detail-2": "Register a new account, wait for administrator approval. Sign in to the system with an approved account.",
+      "step-3": "Step 3:",
+      "step-title-3": "Register & Sign In",
+      "step-detail-3": "Register a new account, wait for administrator approval. Sign in to the system with an approved account."
+    },
     "logged": {
       "message": "Bạn đang đăng nhập bằng tài khoản \"{{username}}\"."
     },
-    "question": "Nếu bạn có bất kỳ câu hỏi nào về JHipster vui lòng truy cập:",
+    "question": "Nếu bạn có bất kỳ câu hỏi nào về chúng tôi vui lòng truy cập:",
     "link": {
-      "homepage": "Trang chủ JHipster",
+      "homepage": "Trang chủ ClassSchedule",
       "stackoverflow": "JHipster trên Stack Overflow",
       "bugtracker": "Theo dõi các lỗi JHipster",
       "chat": "Phòng chat công cộng JHipster",
       "follow": "Theo dõi @jhipster trên Twitter"
     },
-    "like": "Nếu bạn thích JHipster, đừng quên cho chúng tôi thêm một ngôi sao trên",
+    "like": "Nếu bạn thích Class Schedule, đừng quên cho chúng tôi thêm một ngôi sao trên",
     "github": "GitHub"
   }
 }

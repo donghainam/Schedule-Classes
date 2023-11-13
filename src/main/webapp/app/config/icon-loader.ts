@@ -34,6 +34,11 @@ import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons/faLocationDot';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
+import { faPhone } from '@fortawesome/free-solid-svg-icons/faPhone';
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons/faCalendarDays';
+
 export const loadIcons = () => {
   library.add(
     faArrowLeft,
@@ -68,6 +73,10 @@ export const loadIcons = () => {
     faUserPlus,
     faUsers,
     faUsersCog,
-    faWrench
+    faWrench,
+    faLocationDot,
+    faEnvelope,
+    faPhone,
+    faCalendarDays
   );
 };
