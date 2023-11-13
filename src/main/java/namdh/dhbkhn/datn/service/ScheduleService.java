@@ -12,6 +12,7 @@ import namdh.dhbkhn.datn.repository.ClassesRepository;
 import namdh.dhbkhn.datn.repository.ClassroomRepository;
 import namdh.dhbkhn.datn.repository.ClassroomStatusRepository;
 import namdh.dhbkhn.datn.service.dto.schedule.ScheduleDTO;
+import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -121,9 +122,10 @@ public class ScheduleService {
                     status = 1;
                 }
                 // Get one classroom from db
-                ClassroomStatus classroomStatus = classroomStatusRepository.getClassroomIdByStatus(i, status);
+                ClassroomStatus classroomStatus = classroomStatusRepository.getClassroomStatusByWeekAndStatus(i, status);
                 if (classroomStatus == null) {
                     log.info("Classrooms aren't enough for all classes");
+                    throw new BadRequestException("error.classroomNotEnough", null);
                 }
                 Classroom classroom = classroomStatus.getClassroom();
                 int[][] w = new int[5][2];
@@ -137,6 +139,7 @@ public class ScheduleService {
                     this.scheduleClasses(classes, classroom, w, result, i);
                 } else {
                     log.info("Classrooms aren't enough for all classes");
+                    throw new BadRequestException("error.classroomNotEnough", null);
                 }
             }
         }
@@ -149,7 +152,38 @@ public class ScheduleService {
                 if (w[i][j] >= classes.getNumberOfLessons()) {
                     String begin = this.getBegin(w[i][j] + 10 * j);
                     String end = this.getEnd(w[i][j] + 10 * j, classes.getNumberOfLessons());
-                    List<Integer> weekNote = this.scheduleTheClassWeek(classes.getId(), classroom.getId(), week, end, i, w[i][j]);
+                    ClassroomStatus classroomStatus = Utils.requireExists(
+                        classroomStatusRepository.findByClassroomIdAndWeek(classroom.getId(), week),
+                        "error.classroomWeekNotFound"
+                    );
+                    List<String> beginList = classroomStatus.getTimeNoteExtra(String.valueOf(i) + 0);
+                    List<String> endList = classroomStatus.getTimeNoteExtra(String.valueOf(i) + 1);
+                    if (beginList != null && endList != null) {
+                        for (int n = 0; n < beginList.size(); n++) {
+                            int session = getSession(endList.get(n));
+                            if (session == j && classes.getNumberOfLessons() == 3) {
+                                String oldBegin = beginList.get(n);
+                                if (session == 0) {
+                                    if (oldBegin.equals("0645")) {
+                                        begin = "0920";
+                                        end = "1145";
+                                    } else if (oldBegin.equals("0920")) {
+                                        begin = "0645";
+                                        end = "0910";
+                                    }
+                                } else {
+                                    if (oldBegin.equals("1230")) {
+                                        begin = "1505";
+                                        end = "1730";
+                                    } else if (oldBegin.equals("1505")) {
+                                        begin = "1230";
+                                        end = "1455";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    List<Integer> weekNote = this.scheduleTheClassWeek(classes, classroom.getId(), week, begin, end, i, w[i][j]);
 
                     ScheduleDTO scheduleDTO = new ScheduleDTO();
                     scheduleDTO.setCourseCode(classes.getCourseCode());
@@ -171,15 +205,15 @@ public class ScheduleService {
     }
 
     private List<Integer> scheduleTheClassWeek(
-        long classesId,
+        Classes classes,
         long classroomId,
         int weekFirst,
+        String begin,
         String end,
         int weekDay,
         int remainingLessons
     ) {
         List<Integer> result = new ArrayList<>();
-        Classes classes = Utils.requireExists(classesRepository.findById(classesId), "error.classesNotFound");
         int cnt = classes.getCountWeekStudied();
         int lastWeek;
         if (weekFirst > 20) {
@@ -206,15 +240,22 @@ public class ScheduleService {
                 this.initArray(w);
             }
 
+            List<String> beginList = classroomStatus.getTimeNoteExtra(String.valueOf(weekDay) + 0);
+            if (beginList == null) {
+                beginList = new ArrayList<>();
+            }
+            List<String> endList = classroomStatus.getTimeNoteExtra(String.valueOf(weekDay) + 1);
+            if (endList == null) {
+                endList = new ArrayList<>();
+            }
+
             // Check week and save
-            if (w[weekDay][session] == remainingLessons) {
+            if (w[weekDay][session] >= remainingLessons && !beginList.contains(begin) && !endList.contains(end)) {
                 result.add(weekFirst);
-                List<String> stringList = classroomStatus.getTimeNoteExtra(String.valueOf(weekDay));
-                if (stringList == null) {
-                    stringList = new ArrayList<>();
-                }
-                stringList.add(end);
-                classroomStatus.addTimeNote(String.valueOf(weekDay), stringList);
+                beginList.add(begin);
+                endList.add(end);
+                classroomStatus.addTimeNote(String.valueOf(weekDay) + 0, beginList);
+                classroomStatus.addTimeNote(String.valueOf(weekDay) + 1, endList);
                 // Handle condition classroom
                 w[weekDay][session] -= classes.getNumberOfLessons();
                 if (!checkClassroom(w, 3)) {
@@ -224,10 +265,10 @@ public class ScheduleService {
                 }
                 classroomStatusRepository.save(classroomStatus);
                 weekFirst += classes.getConditions();
+                cnt++;
             } else {
                 weekFirst++;
             }
-            cnt++;
         }
         classes.setCountWeekStudied(cnt);
         classesRepository.save(classes);
@@ -270,11 +311,16 @@ public class ScheduleService {
 
     private void getTimeNote(int[][] w, ClassroomStatus classroomStatus) {
         for (int i = 0; i < 5; i++) {
-            List<String> ends = classroomStatus.getTimeNoteExtra(String.valueOf(i));
-            if (ends != null) {
-                for (String end : ends) {
+            List<String> beginList = classroomStatus.getTimeNoteExtra(String.valueOf(i) + 0);
+            List<String> endList = classroomStatus.getTimeNoteExtra(String.valueOf(i) + 1);
+            if (endList != null && beginList != null) {
+                for (int j = 0; j < beginList.size(); j++) {
+                    String begin = beginList.get(j);
+                    String end = endList.get(j);
                     int session = this.getSession(end);
-                    w[i][session] = this.getRemainingWOfSession(end);
+                    int sub = Integer.parseInt(end) - Integer.parseInt(begin);
+                    int timeHaveStudied = getTimeHaveStudied(sub);
+                    w[i][session] -= timeHaveStudied;
                 }
             }
         }
@@ -431,5 +477,36 @@ public class ScheduleService {
                 w = 6;
         }
         return w;
+    }
+
+    private int getTimeHaveStudied(int sub) {
+        int num;
+        switch (sub) {
+            case 45:
+            case 85:
+                num = 1;
+                break;
+            case 130:
+            case 140:
+            case 170:
+            case 180:
+                num = 2;
+                break;
+            case 265:
+            case 275:
+            case 225:
+            case 235:
+                num = 3;
+                break;
+            case 360:
+            case 370:
+            case 320:
+            case 330:
+                num = 4;
+                break;
+            default:
+                num = 5;
+        }
+        return num;
     }
 }
