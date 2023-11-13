@@ -13,6 +13,10 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "name")
     private String name;
 
@@ -72,6 +76,14 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {

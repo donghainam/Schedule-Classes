@@ -14,16 +14,16 @@ public interface ClassesRepository extends JpaRepository<Classes, Long> {
     Optional<Classes> findByClassNote(String classNote);
 
     @Query(
-        value = "Select * from classes where start_week <= ?1 " +
+        value = "Select * from classes where start_week <= ?1 and user_id = ?3 " +
         "and count_week_studied < number_of_week_study " +
         "and upper(semester) like upper(concat('%', ?2, '%')) order by id desc",
         nativeQuery = true
     )
-    List<Classes> getAllClasses(int startWeek, String semester);
+    List<Classes> getAllClasses(int startWeek, String semester, Long userId);
 
     List<Classes> getClassesBySemester(String semester);
 
-    Page<Classes> findAllByNameIsNotNull(Pageable pageable);
+    Page<Classes> findAllByUserIdAndNameIsNotNull(Pageable pageable, Long userId);
 
-    Page<Classes> findAllByNameContainingIgnoreCase(Pageable pageable, String name);
+    Page<Classes> findAllByNameContainingIgnoreCaseAndUserId(Pageable pageable, String name, Long userId);
 }

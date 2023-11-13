@@ -12,6 +12,9 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
@@ -25,6 +28,9 @@
         <createTable tableName="classroom_status">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
             </column>
             <column name="classroom_id" type="bigint">
                 <constraints nullable="false"/>
@@ -43,6 +49,9 @@
         <createTable tableName="classes">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
             </column>
             <column name="name" type="varchar(255)"/>
             <column name="class_note" type="varchar(255)">
