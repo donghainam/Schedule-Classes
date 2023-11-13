@@ -18,6 +18,9 @@ public class Classroom extends AbstractAuditingEntity<Long> implements Serializa
     @Column(name = "name")
     private String name;
 
+    @Column(name = "max_sv")
+    private int maxSv;
+
     public Long getId() {
         return id;
     }
@@ -40,5 +43,13 @@ public class Classroom extends AbstractAuditingEntity<Long> implements Serializa
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getMaxSv() {
+        return maxSv;
+    }
+
+    public void setMaxSv(int maxSv) {
+        this.maxSv = maxSv;
     }
 }

@@ -51,9 +51,21 @@ public class ClassroomService {
         if (optional.isPresent()) {
             throw new BadRequestException("error.classroomNameExisted", null);
         }
+        String name = classroomInputDTO.getName();
+        if (Utils.isAllSpaces(name) || name.isEmpty()) {
+            throw new BadRequestException("error.classroomNameEmptyOrBlank", null);
+        }
+        String maxSv = classroomInputDTO.getMaxSv();
+        String regexMaxSv = "^[0-9-\\s]*$";
+        if (Utils.isAllSpaces(maxSv) || maxSv.isEmpty()) {
+            throw new BadRequestException("error.maxSvEmptyOrBlank", null);
+        } else if (!maxSv.matches(regexMaxSv)) {
+            throw new BadRequestException("error.maxSvInvalid", null);
+        }
         Classroom classroom = new Classroom();
         classroom.setUser(user);
-        classroom.setName(classroomInputDTO.getName());
+        classroom.setName(name);
+        classroom.setMaxSv(Integer.parseInt(maxSv));
         classroomRepository.save(classroom);
         for (int i = 1; i < 54; i++) {
             ClassroomStatus classroomStatus = new ClassroomStatus();
@@ -74,10 +86,19 @@ public class ClassroomService {
         if (!userACL.canUpdate(classroom.getUser().getId())) {
             throw new AccessForbiddenException("error.notUserCreateClassroom");
         }
-        if (Utils.isAllSpaces(classroomInputDTO.getName()) || classroomInputDTO.getName().isEmpty()) {
+        String name = classroomInputDTO.getName();
+        if (Utils.isAllSpaces(name) || name.isEmpty()) {
             throw new BadRequestException("error.classroomNameEmptyOrBlank", null);
         }
-        classroom.setName(classroomInputDTO.getName());
+        String regexMaxSv = "^[0-9-\\s]*$";
+        String maxSv = classroomInputDTO.getMaxSv();
+        if (Utils.isAllSpaces(maxSv) || maxSv.isEmpty()) {
+            throw new BadRequestException("error.maxSvEmptyOrBlank", null);
+        } else if (!maxSv.matches(regexMaxSv)) {
+            throw new BadRequestException("error.maxSvInvalid", null);
+        }
+        classroom.setName(name);
+        classroom.setMaxSv(Integer.parseInt(maxSv));
         classroomOutputDTO = new ClassroomOutputDTO(classroom);
         return classroomOutputDTO;
     }

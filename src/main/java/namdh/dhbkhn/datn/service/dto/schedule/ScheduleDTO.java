@@ -10,6 +10,8 @@ public class ScheduleDTO {
     private String className;
     private String classNote;
     private String classroom;
+    private String departmentName;
+    private int maxSv;
     private Map<String, Object> timeNote;
 
     public String getCourseCode() {
@@ -42,6 +44,22 @@ public class ScheduleDTO {
 
     public void setClassroom(String classroom) {
         this.classroom = classroom;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public int getMaxSv() {
+        return maxSv;
+    }
+
+    public void setMaxSv(int maxSv) {
+        this.maxSv = maxSv;
     }
 
     public Map<String, Object> getTimeNote() {

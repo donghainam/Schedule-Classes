@@ -7,6 +7,7 @@ public class ClassroomOutputDTO {
     private Long id;
     private Long userId;
     private String name;
+    private int maxSv;
 
     public ClassroomOutputDTO() {}
 
@@ -14,6 +15,7 @@ public class ClassroomOutputDTO {
         this.id = classroom.getId();
         this.userId = classroom.getUser().getId();
         this.name = classroom.getName();
+        this.maxSv = classroom.getMaxSv();
     }
 
     public Long getId() {
@@ -38,5 +40,13 @@ public class ClassroomOutputDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getMaxSv() {
+        return maxSv;
+    }
+
+    public void setMaxSv(int maxSv) {
+        this.maxSv = maxSv;
     }
 }

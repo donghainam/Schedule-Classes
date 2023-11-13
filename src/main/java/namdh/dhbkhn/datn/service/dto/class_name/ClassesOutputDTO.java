@@ -15,6 +15,7 @@ public class ClassesOutputDTO {
     private String semester;
     private int conditions;
     private int countWeekStudied;
+    private String departmentName;
 
     public ClassesOutputDTO() {}
 
@@ -30,6 +31,7 @@ public class ClassesOutputDTO {
         this.conditions = classes.getConditions();
         this.countWeekStudied = classes.getCountWeekStudied();
         this.numberOfWeekStudy = classes.getNumberOfWeekStudy();
+        this.departmentName = classes.getDepartmentName();
     }
 
     public Long getId() {
@@ -126,5 +128,13 @@ public class ClassesOutputDTO {
 
     public void setCountCondition(int countCondition) {
         this.countWeekStudied = countCondition;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 }

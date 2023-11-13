@@ -68,7 +68,7 @@ public class ScheduleService {
             style.setFont(font);
 
             Row rowHead = sheet.createRow(0);
-            rowHead.createCell(0).setCellValue("CourseCode");
+            rowHead.createCell(0).setCellValue("CourseID");
             rowHead.createCell(1).setCellValue("CourseName");
             rowHead.createCell(2).setCellValue("Note");
             rowHead.createCell(3).setCellValue("WeekNote");
@@ -76,8 +76,10 @@ public class ScheduleService {
             rowHead.createCell(5).setCellValue("Begin");
             rowHead.createCell(6).setCellValue("End");
             rowHead.createCell(7).setCellValue("Room");
+            rowHead.createCell(8).setCellValue("DepartmentName");
+            rowHead.createCell(9).setCellValue("MAX");
 
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < 10; j++) {
                 rowHead.getCell(j).setCellStyle(style);
             }
 
@@ -211,6 +213,8 @@ public class ScheduleService {
                     scheduleDTO.setClassName(classes.getName());
                     scheduleDTO.setClassNote(classes.getClassNote());
                     scheduleDTO.setClassroom(classroom.getName());
+                    scheduleDTO.setDepartmentName(classes.getDepartmentName());
+                    scheduleDTO.setMaxSv(classroom.getMaxSv());
 
                     // TimeNote
                     scheduleDTO.addTimeNote("WeekNote", weekNote);
@@ -310,6 +314,8 @@ public class ScheduleService {
             row.createCell(5).setCellValue((String) scheduleDTO.getTimeNoteExtra("Begin"));
             row.createCell(6).setCellValue((String) scheduleDTO.getTimeNoteExtra("End"));
             row.createCell(7).setCellValue(scheduleDTO.getClassroom());
+            row.createCell(8).setCellValue(scheduleDTO.getDepartmentName());
+            row.createCell(9).setCellValue(scheduleDTO.getMaxSv());
         }
     }
 
