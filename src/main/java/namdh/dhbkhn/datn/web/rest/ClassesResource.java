@@ -5,10 +5,13 @@ import java.util.List;
 import namdh.dhbkhn.datn.service.ClassesService;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesInputDTO;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +26,19 @@ public class ClassesResource {
 
     public ClassesResource(ClassesService classNameService) {
         this.classesService = classNameService;
+    }
+
+    @GetMapping("/template")
+    public ResponseEntity<Resource> downloadTemplateImportClass() {
+        Resource resource = new ClassPathResource("TemplateImportSubject.xlsx");
+        return ResponseEntity
+            .ok()
+            .header("content-disposition", "attachment; filename=TemplateImportSubject.xlsx")
+            .header("Pragma", "public")
+            .header("Cache-Control", "no-store")
+            .header("Cache-Control", "max-age=0")
+            .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+            .body(resource);
     }
 
     @PostMapping("/import")
