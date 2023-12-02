@@ -7,7 +7,7 @@ public class ClassesInputDTO {
     private String courseCode;
     private int startWeek;
     private int numberOfLessons;
-    private int numberOfWeekStudy;
+    private int totalNumberOfLessons;
     private String semester;
     private int conditions;
     private String departmentName;
@@ -52,12 +52,12 @@ public class ClassesInputDTO {
         this.numberOfLessons = numberOfLessons;
     }
 
-    public int getNumberOfWeekStudy() {
-        return numberOfWeekStudy;
+    public int getTotalNumberOfLessons() {
+        return totalNumberOfLessons;
     }
 
-    public void setNumberOfWeekStudy(int numberOfWeekStudy) {
-        this.numberOfWeekStudy = numberOfWeekStudy;
+    public void setTotalNumberOfLessons(int totalNumberOfLessons) {
+        this.totalNumberOfLessons = totalNumberOfLessons;
     }
 
     public String getSemester() {

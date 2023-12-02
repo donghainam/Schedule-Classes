@@ -49,18 +49,6 @@ public class Classes extends AbstractAuditingEntity<Long> implements Serializabl
 
     public Classes() {}
 
-    public Classes(ClassesInputDTO classesInputDTO) {
-        this.name = classesInputDTO.getName();
-        this.classNote = classesInputDTO.getClassNote();
-        this.courseCode = classesInputDTO.getCourseCode();
-        this.startWeek = classesInputDTO.getStartWeek();
-        this.numberOfLessons = classesInputDTO.getNumberOfLessons();
-        this.numberOfWeekStudy = classesInputDTO.getNumberOfWeekStudy();
-        this.semester = classesInputDTO.getSemester();
-        this.conditions = classesInputDTO.getConditions();
-        this.departmentName = classesInputDTO.getDepartmentName();
-    }
-
     public Classes(ClassesOutputDTO classesOutputDTO) {
         this.id = classesOutputDTO.getId();
         this.name = classesOutputDTO.getName();

@@ -174,6 +174,59 @@ public class ClassesService {
         return cellValue;
     }
 
+    public ClassesOutputDTO create(ClassesInputDTO classesInputDTO) {
+        if (!userACL.isUser()) {
+            throw new AccessForbiddenException("error.notUser");
+        }
+        User user = Utils.requireExists(SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin), "error.userNotFound");
+        Optional<Classes> optional = classesRepository.findByCourseCodeAndClassNoteAndUserId(
+            classesInputDTO.getCourseCode(),
+            classesInputDTO.getClassNote(),
+            user.getId()
+        );
+        if (optional.isPresent()) {
+            throw new BadRequestException("error.classesExisted", null);
+        }
+        String semester = classesInputDTO.getSemester();
+        if (Utils.isAllSpaces(semester) || semester.isEmpty()) {
+            throw new BadRequestException("error.semesterEmptyOrBlank", null);
+        }
+        String classNote = classesInputDTO.getClassNote();
+        if (Utils.isAllSpaces(classNote) || classNote.isEmpty()) {
+            throw new BadRequestException("error.classNoteEmptyOrBlank", null);
+        }
+        String courseCode = classesInputDTO.getCourseCode();
+        if (Utils.isAllSpaces(courseCode) || courseCode.isEmpty()) {
+            throw new BadRequestException("error.courseCodeEmptyOrBlank", null);
+        }
+        int startWeek = classesInputDTO.getStartWeek();
+        if (startWeek < 1) {
+            throw new BadRequestException("error.startWeekInvalid", null);
+        }
+        int numberOfLessons = classesInputDTO.getNumberOfLessons();
+        if (numberOfLessons < 1) {
+            throw new BadRequestException("error.numberOfLessonsInvalid", null);
+        }
+        int totalNumberOfWeekStudy = classesInputDTO.getTotalNumberOfLessons();
+        if (totalNumberOfWeekStudy < 1 || totalNumberOfWeekStudy < numberOfLessons) {
+            throw new BadRequestException("error.totalNumberOfWeekStudyInvalid", null);
+        }
+        Classes classes = new Classes();
+        classes.setUser(user);
+        classes.setName(classesInputDTO.getName());
+        classes.setCourseCode(classesInputDTO.getCourseCode());
+        classes.setClassNote(classNote);
+        classes.setStartWeek(startWeek);
+        classes.setNumberOfLessons(numberOfLessons);
+        int numberOfWeekStudy = totalNumberOfWeekStudy / numberOfLessons;
+        classes.setNumberOfWeekStudy(numberOfWeekStudy);
+        classes.setSemester(semester);
+        classes.setConditions(classesInputDTO.getConditions());
+        classes.setDepartmentName(classesInputDTO.getDepartmentName());
+        classesRepository.save(classes);
+        return new ClassesOutputDTO(classes);
+    }
+
     public ClassesOutputDTO update(ClassesInputDTO classesInputDTO, long id) {
         if (!userACL.isUser()) {
             throw new AccessForbiddenException("error.notUser");
@@ -200,18 +253,19 @@ public class ClassesService {
         classes.setCourseCode(courseCode);
         int startWeek = classesInputDTO.getStartWeek();
         if (startWeek < 1 || startWeek > 53) {
-            throw new BadRequestException("error.startWeekIncorrect", null);
+            throw new BadRequestException("error.startWeekInvalid", null);
         }
         classes.setStartWeek(startWeek);
         int numberOfLessons = classesInputDTO.getNumberOfLessons();
         if (numberOfLessons < 1 || numberOfLessons > 6) {
-            throw new BadRequestException("error.numberOfLessonsIncorrect", null);
+            throw new BadRequestException("error.numberOfLessonsInvalid", null);
         }
         classes.setNumberOfLessons(numberOfLessons);
-        int numberOfWeekStudy = classesInputDTO.getNumberOfWeekStudy();
-        if (numberOfWeekStudy < 1 || numberOfWeekStudy > 21) {
-            throw new BadRequestException("error.startWeekIncorrect", null);
+        int totalNumberOfLessons = classesInputDTO.getTotalNumberOfLessons();
+        if (totalNumberOfLessons < 1 || totalNumberOfLessons < numberOfLessons) {
+            throw new BadRequestException("error.totalNumberOfLessonsInvalid", null);
         }
+        int numberOfWeekStudy = totalNumberOfLessons / numberOfLessons;
         classes.setNumberOfWeekStudy(numberOfWeekStudy);
         String semester = classesInputDTO.getSemester();
         if (Utils.isAllSpaces(semester) || semester.isEmpty()) {

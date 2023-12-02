@@ -26,4 +26,6 @@ public interface ClassesRepository extends JpaRepository<Classes, Long> {
     Page<Classes> findAllByUserIdAndNameIsNotNull(Pageable pageable, Long userId);
 
     Page<Classes> findAllByNameContainingIgnoreCaseAndUserId(Pageable pageable, String name, Long userId);
+
+    Optional<Classes> findByCourseCodeAndClassNoteAndUserId(String courseCode, String classNote, Long userId);
 }

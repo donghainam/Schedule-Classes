@@ -30,6 +30,11 @@ public class ClassesResource {
         classesService.importClassList(file.getInputStream());
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<ClassesOutputDTO> create(@RequestBody ClassesInputDTO classesInputDTO) {
+        return new ResponseEntity<>(this.classesService.create(classesInputDTO), HttpStatus.CREATED);
+    }
+
     @GetMapping("")
     public ResponseEntity<List<ClassesOutputDTO>> getAll(Pageable pageable, @RequestParam(required = false) String name) {
         Page<ClassesOutputDTO> page = this.classesService.getAll(pageable, name);
