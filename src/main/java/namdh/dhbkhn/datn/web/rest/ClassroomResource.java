@@ -4,6 +4,7 @@ import java.util.List;
 import namdh.dhbkhn.datn.service.ClassroomService;
 import namdh.dhbkhn.datn.service.dto.classroom.ClassroomInputDTO;
 import namdh.dhbkhn.datn.service.dto.classroom.ClassroomOutputDTO;
+import namdh.dhbkhn.datn.service.dto.classroom.NumClassroomDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,11 @@ public class ClassroomResource {
     @GetMapping("/{id}")
     public ResponseEntity<ClassroomOutputDTO> getOne(@PathVariable(name = "id") long id) {
         return new ResponseEntity<>(this.classroomService.getOne(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/number-of-classroom")
+    public ResponseEntity<NumClassroomDTO> getNumForAllClassroom() {
+        return new ResponseEntity<>(this.classroomService.getNumbForAllClassroom(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

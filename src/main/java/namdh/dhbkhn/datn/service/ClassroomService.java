@@ -9,8 +9,10 @@ import namdh.dhbkhn.datn.repository.ClassroomRepository;
 import namdh.dhbkhn.datn.repository.ClassroomStatusRepository;
 import namdh.dhbkhn.datn.repository.UserRepository;
 import namdh.dhbkhn.datn.security.SecurityUtils;
+import namdh.dhbkhn.datn.service.dto.class_name.NumClassesDTO;
 import namdh.dhbkhn.datn.service.dto.classroom.ClassroomInputDTO;
 import namdh.dhbkhn.datn.service.dto.classroom.ClassroomOutputDTO;
+import namdh.dhbkhn.datn.service.dto.classroom.NumClassroomDTO;
 import namdh.dhbkhn.datn.service.error.AccessForbiddenException;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
@@ -127,6 +129,17 @@ public class ClassroomService {
             throw new AccessForbiddenException("error.notUserCreateClassroom");
         }
         return new ClassroomOutputDTO(classroom);
+    }
+
+    public NumClassroomDTO getNumbForAllClassroom() {
+        if (!userACL.isUser()) {
+            throw new AccessForbiddenException("error.notUser");
+        }
+        User user = Utils.requireExists(SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin), "error.userNotFound");
+        Long num = this.classroomRepository.countAllByUserId(user.getId());
+        NumClassroomDTO result = new NumClassroomDTO();
+        result.setNum(num);
+        return result;
     }
 
     public void delete(long id) {

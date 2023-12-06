@@ -18,4 +18,6 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
     Page<Classroom> getAllByUserIdAndNameIsNotNull(Pageable pageable, Long userId);
 
     Page<Classroom> findAllByNameContainingIgnoreCaseAndUserId(Pageable pageable, String name, Long userId);
+
+    Long countAllByUserId(Long userId);
 }

@@ -12,6 +12,7 @@ import namdh.dhbkhn.datn.repository.UserRepository;
 import namdh.dhbkhn.datn.security.SecurityUtils;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesInputDTO;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
+import namdh.dhbkhn.datn.service.dto.class_name.NumClassesDTO;
 import namdh.dhbkhn.datn.service.error.AccessForbiddenException;
 import namdh.dhbkhn.datn.service.error.BadRequestException;
 import namdh.dhbkhn.datn.service.utils.Utils;
@@ -304,6 +305,17 @@ public class ClassesService {
             throw new AccessForbiddenException("error.notUserCreateClass");
         }
         return new ClassesOutputDTO(classes);
+    }
+
+    public NumClassesDTO getNumbForAllClasses() {
+        if (!userACL.isUser()) {
+            throw new AccessForbiddenException("error.notUser");
+        }
+        User user = Utils.requireExists(SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneByLogin), "error.userNotFound");
+        Long num = this.classesRepository.countAllByUserId(user.getId());
+        NumClassesDTO result = new NumClassesDTO();
+        result.setNum(num);
+        return result;
     }
 
     public void delete(long id) {

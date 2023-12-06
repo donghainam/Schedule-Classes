@@ -59,6 +59,11 @@ public class ScheduleService {
         if (!userACL.isUser()) {
             throw new AccessForbiddenException("error.notUser");
         }
+        if (Utils.isAllSpaces(semester) || semester.isEmpty()) {
+            throw new BadRequestException("error.semesterEmptyOrBlank", null);
+        } else if (semester.length() != 5) {
+            throw new BadRequestException("error.semesterInvalid", null);
+        }
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             Sheet sheet = workbook.createSheet("Schedule");
 
@@ -112,6 +117,7 @@ public class ScheduleService {
         this.classesRepository.saveAll(clList);
 
         // Get start, end week for semester
+
         String st = semester.substring(4);
         int start;
         int end;

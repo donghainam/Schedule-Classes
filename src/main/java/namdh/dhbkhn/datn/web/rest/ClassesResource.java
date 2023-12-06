@@ -5,6 +5,7 @@ import java.util.List;
 import namdh.dhbkhn.datn.service.ClassesService;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesInputDTO;
 import namdh.dhbkhn.datn.service.dto.class_name.ClassesOutputDTO;
+import namdh.dhbkhn.datn.service.dto.class_name.NumClassesDTO;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -61,6 +62,11 @@ public class ClassesResource {
     @GetMapping("/{id}")
     public ResponseEntity<ClassesOutputDTO> getOne(@PathVariable(name = "id") long id) {
         return new ResponseEntity<>(this.classesService.getOne(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/number-of-classes")
+    public ResponseEntity<NumClassesDTO> getNumForAllClasses() {
+        return new ResponseEntity<>(this.classesService.getNumbForAllClasses(), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
