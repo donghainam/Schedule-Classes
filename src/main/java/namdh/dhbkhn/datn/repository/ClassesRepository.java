@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClassesRepository extends JpaRepository<Classes, Long> {
-    Optional<Classes> findByClassNote(String classNote);
+    Optional<Classes> findByClassNoteAndUserId(String classNote, Long userId);
 
     @Query(
         value = "Select * from classes where start_week <= ?1 and user_id = ?3 " +

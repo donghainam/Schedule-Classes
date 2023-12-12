@@ -49,7 +49,11 @@ public class ClassesService {
 
         if (classNameList.size() > 0) {
             for (ClassesOutputDTO classesOutputDTO : classNameList) {
-                Optional<Classes> optional = classesRepository.findByClassNote(classesOutputDTO.getClassNote());
+                Optional<Classes> optional = classesRepository.findByCourseCodeAndClassNoteAndUserId(
+                    classesOutputDTO.getCourseCode(),
+                    classesOutputDTO.getClassNote(),
+                    user.getId()
+                );
                 if (!optional.isPresent()) {
                     Classes classes = new Classes(classesOutputDTO);
                     classes.setUser(user);

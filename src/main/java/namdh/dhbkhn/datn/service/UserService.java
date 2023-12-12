@@ -13,6 +13,7 @@ import namdh.dhbkhn.datn.security.AuthoritiesConstants;
 import namdh.dhbkhn.datn.security.SecurityUtils;
 import namdh.dhbkhn.datn.service.dto.AdminUserDTO;
 import namdh.dhbkhn.datn.service.dto.UserDTO;
+import namdh.dhbkhn.datn.service.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -83,14 +84,6 @@ public class UserService {
 
     public User registerUser(AdminUserDTO userDTO, String password) {
         userRepository
-            .findOneByLogin(userDTO.getLogin().toLowerCase())
-            .ifPresent(existingUser -> {
-                boolean removed = removeNonActivatedUser(existingUser);
-                if (!removed) {
-                    throw new UsernameAlreadyUsedException();
-                }
-            });
-        userRepository
             .findOneByEmailIgnoreCase(userDTO.getEmail())
             .ifPresent(existingUser -> {
                 boolean removed = removeNonActivatedUser(existingUser);
@@ -100,7 +93,11 @@ public class UserService {
             });
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin().toLowerCase());
+        if (userDTO.getLogin() != null) {
+            newUser.setLogin(Utils.handleWhitespace(userDTO.getLogin().toLowerCase()));
+        } else {
+            newUser.setLogin(UUID.randomUUID().toString());
+        }
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(userDTO.getFirstName());
