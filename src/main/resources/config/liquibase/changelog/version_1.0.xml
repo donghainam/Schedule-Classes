@@ -80,5 +80,19 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
     </changeSet>
+    <changeSet id="v1.0.2" author="namdh">
+        <addForeignKeyConstraint baseTableName="classes"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_classes_jhi_user"
+                                 referencedTableName="jhi_user"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="classroom"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_classroom_jhi_user"
+                                 referencedTableName="jhi_user"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"/>
+    </changeSet>
 
 </databaseChangeLog>
