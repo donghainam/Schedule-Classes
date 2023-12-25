@@ -38,7 +38,7 @@ public class TestContainersSpringContextCustomizerFactory implements ContextCust
                     if (null == devTestContainer) {
                         try {
                             Class<? extends SqlTestContainer> containerClass = (Class<? extends SqlTestContainer>) Class.forName(
-                                this.getClass().getPackageName() + ".MysqlTestContainer"
+                                this.getClass().getPackage() + ".MysqlTestContainer"
                             );
                             devTestContainer = beanFactory.createBean(containerClass);
                             beanFactory.registerSingleton(containerClass.getName(), devTestContainer);
@@ -64,7 +64,7 @@ public class TestContainersSpringContextCustomizerFactory implements ContextCust
                     if (null == prodTestContainer) {
                         try {
                             Class<? extends SqlTestContainer> containerClass = (Class<? extends SqlTestContainer>) Class.forName(
-                                this.getClass().getPackageName() + ".MysqlTestContainer"
+                                this.getClass().getPackage() + ".MysqlTestContainer"
                             );
                             prodTestContainer = beanFactory.createBean(containerClass);
                             beanFactory.registerSingleton(containerClass.getName(), prodTestContainer);
