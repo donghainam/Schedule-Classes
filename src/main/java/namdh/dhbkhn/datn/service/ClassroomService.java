@@ -9,7 +9,6 @@ import namdh.dhbkhn.datn.repository.ClassroomRepository;
 import namdh.dhbkhn.datn.repository.ClassroomStatusRepository;
 import namdh.dhbkhn.datn.repository.UserRepository;
 import namdh.dhbkhn.datn.security.SecurityUtils;
-import namdh.dhbkhn.datn.service.dto.class_name.NumClassesDTO;
 import namdh.dhbkhn.datn.service.dto.classroom.ClassroomInputDTO;
 import namdh.dhbkhn.datn.service.dto.classroom.ClassroomOutputDTO;
 import namdh.dhbkhn.datn.service.dto.classroom.NumClassroomDTO;
