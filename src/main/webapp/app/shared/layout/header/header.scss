@@ -17,7 +17,7 @@ Developement Ribbon
   position: absolute;
   top: 30px;
   white-space: nowrap;
-  width: 15em;
+  width: 12em;
   z-index: 99999;
   pointer-events: none;
   opacity: 0.75;
@@ -38,13 +38,21 @@ Developement Ribbon
 Navbar styles
 ========================================================================== */
 .jh-navbar {
-  background-color: #353d47;
-  padding: 0.2em 1em;
+  //background: linear-gradient(110deg, rgb(242, 159, 5) 5%, rgb(242, 159, 5));
+  background: #f27b13;
+  padding: 0 2em;
+  /* box-shadow: gom 5 thuoc tinh x-y-do mo-phong rong-mau */
+  box-shadow: 3px 1px 15px 2px #a59c37;
   .profile-image {
     margin: -10px 0px;
     height: 40px;
     width: 40px;
     border-radius: 50%;
+  }
+
+  .main-nav li a:hover,
+  .main-nav li a:active {
+    border-bottom: 2px solid #cccccc;
   }
   .dropdown-item.active,
   .dropdown-item.active:focus,
@@ -55,9 +63,8 @@ Navbar styles
     margin-left: 0.15em;
   }
   ul.navbar-nav {
-    padding: 0.5em;
     .nav-item {
-      margin-left: 1.5rem;
+      margin-left: 1.8rem;
     }
   }
   a.nav-link {
@@ -98,14 +105,15 @@ Navbar styles
     height: 35px;
     width: auto;
     display: inline-block;
-    img {
-      height: 45px;
+    .font-icon {
+      color: $header-color;
     }
   }
 }
 
 .brand-title {
-  font-size: 24px;
+  font-size: 20px;
+  padding: 0 0 0 10px;
   color: $header-color;
   &:hover {
     color: $header-color-hover;

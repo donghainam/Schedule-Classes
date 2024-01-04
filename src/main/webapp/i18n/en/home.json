@@ -1,19 +1,40 @@
 {
   "home": {
-    "title": "Welcome, Java Hipster!",
-    "subtitle": "This is your homepage",
+    "title": "Welcome to the Class Schedule Website!",
+    "subtitle": "We are extremely excited for you to come and use our services. This website is designed to help you manage and organize your study time easily and effectively. Regardless of whether you are a student, teacher, or classroom manager, we hope that this website will meet and serve your needs.",
+    "about-services": "This is about our service. This is about our service. This is about our service. This is about our service. This is about our service. This is about our service. This is about our service. This is about our service. This is about our service. This is about our service.",
+    "services": "Services",
+    "service-title": {
+      "name-1": "Schedule",
+      "name-2": "CRUD",
+      "name-3": "Import & Export Data",
+      "detail-1": "From data about classes and classrooms, we arrange class schedules based on optimal algorithms.",
+      "detail-2": "Schedule detail Schedule detail Schedule detail Schedule detail",
+      "detail-3": "Schedule detail Schedule detail Schedule detail Schedule detail"
+    },
+    "user-manual": {
+      "step-1": "Step 1:",
+      "step-title-1": "Register & Sign In",
+      "step-detail-1": "Register a new account, wait for administrator approval. Sign in to the system with an approved account.",
+      "step-2": "Step 2:",
+      "step-title-2": "Register & Sign In",
+      "step-detail-2": "Register a new account, wait for administrator approval. Sign in to the system with an approved account.",
+      "step-3": "Step 3:",
+      "step-title-3": "Register & Sign In",
+      "step-detail-3": "Register a new account, wait for administrator approval. Sign in to the system with an approved account."
+    },
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
     },
-    "question": "If you have any question on JHipster:",
+    "question": "If you have any question on us:",
     "link": {
-      "homepage": "JHipster homepage",
+      "homepage": "ClassSchedule homepage",
       "stackoverflow": "JHipster on Stack Overflow",
       "bugtracker": "JHipster bug tracker",
       "chat": "JHipster public chat room",
       "follow": "follow @jhipster on Twitter"
     },
-    "like": "If you like JHipster, don't forget to give us a star on",
+    "like": "If you like Class Schedule, don't forget to give us a star on",
     "github": "GitHub"
   }
 }

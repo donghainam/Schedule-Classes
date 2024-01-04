@@ -1,3 +1,124 @@
-.footer {
-  height: 50px;
+.footer-contact {
+  //background-image: linear-gradient(10deg, rgba(220, 20, 60, 0.8) 1%, rgba(152, 105, 244, 0.85)), url('../../../../content/images/footerDisplay.webp');
+  background-image: linear-gradient(45deg, rgba(242, 159, 5, 0.4) 30%, rgba(191, 54, 4, 0.45)),
+    url('../../../../content/images/footerDisplay.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+ul {
+  list-style: none;
+  color: white;
+  line-height: 200%;
+  word-spacing: 1px;
+}
+
+/*h1, h2, .text {
+  font-family: 'Share Tech Mono', monospace;
+}*/
+
+.footer-contact h1 {
+  font-family: 'Share Tech Mono', monospace;
+  text-transform: uppercase;
+  /* Khoang cach giua cac chu trong 1 tu */
+  letter-spacing: 1px;
+  color: #ffffff;
+  font-size: 150%;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* ==========================================================================
+Information styles
+========================================================================== */
+.info-us {
+  position: relative;
+  margin: 80px 0;
+}
+
+.info-us .font-icon {
+  color: #ffffff;
+}
+
+.info-us .font-icon:hover,
+.info-us .font-icon:active {
+  transform: scale(1.3);
+  color: #ceae45;
+}
+
+.info p {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/* ==========================================================================
+Footer connect us styles
+========================================================================== */
+.connect-us {
+  position: relative;
+  margin: 60px 0px;
+}
+
+.connect-us .socials-icon {
+  transition: all 0.3s;
+}
+
+.connect-us .socials-icon:hover,
+.connect-us .socials-icon:active {
+  transform: scale(1.3);
+  color: #ceae45;
+}
+
+.connect-us p {
+  display: inline-block;
+  margin-left: 33px;
+}
+
+.socials-icon {
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  vertical-align: top;
+  color: white;
+}
+
+/* ==========================================================================
+Footer contact styles
+========================================================================== */
+.image-us {
+  position: relative;
+  margin: 50px 0;
+}
+
+.image-us img {
+  width: 90%;
+  border-radius: 20px;
+  border: 4px solid #c2e1fd;
+  /* box-shadow: gom 5 thuoc tinh x-y-do mo-phong rong-mau */
+  box-shadow: 0 3px 15px 3px #f27b13;
+  transition: all 0.7s;
+}
+
+.picture-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #c2e1fd;
+  transform: translate(-65%, 100%);
+  /* opactity 1 laf hien 0 la k hien */
+  opacity: 0;
+  transition: all 0.7s;
+}
+
+.image-us:hover img,
+.image-us:active img {
+  filter: brightness(55%) blur(0.2px);
+}
+
+.image-us:hover .picture-title,
+.image-us:active .picture-title {
+  transform: translate(-65%, -50%);
+  opacity: 1;
 }

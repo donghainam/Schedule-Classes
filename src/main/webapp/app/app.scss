@@ -1,5 +1,21 @@
 // Override Boostrap variables
 // Import Bootstrap source files from node_modules
+
+// Sinopia (#CB3503),
+// Spanish Orange (#E65D0A),
+// Beer (#FB931F),
+// Pastel Orange (#FEB845),
+// Old Gold (#CEAE45) và
+// Brass (#A59C37).
+$strip-color-orange-1: #cb3503;
+$strip-color-orange-2: #e65d0a;
+$strip-color-orange-3: #f27b13;
+$strip-color-orange-4: #fb931f;
+$strip-color-orange-5: #f29f05;
+$strip-color-orange-6: #feb845;
+$strip-color-orange-7: #ceae45;
+$strip-color-orange-8: #a59c37;
+
 @import '~bootstrap/scss/bootstrap';
 body {
   background: #fafafa;
@@ -25,12 +41,12 @@ a {
   box-sizing: border-box;
   .view-container {
     width: 100%;
-    height: calc(100% - 40px);
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 1rem;
+    padding: 0;
     .card {
-      padding: 1rem;
+      padding: 0rem;
     }
     .view-routes {
       height: 100%;
